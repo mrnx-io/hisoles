@@ -1,45 +1,67 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { motion, useScroll, useTransform, useSpring } from "motion/react";
+import { useSpine } from "@/components/layout/SpineProvider";
+
+const DETACH_SCROLL_PX = 120;
 
 export function TravelingDot() {
-  const { scrollYProgress } = useScroll();
+  const { scrollY, scrollYProgress } = useScroll();
+  const { logoDotTopY, travelingDotSuppressed } = useSpine();
+  const [viewportHeight, setViewportHeight] = useState(0);
+  const [scrollMax, setScrollMax] = useState(0);
+
+  useEffect(() => {
+    const update = () => {
+      const vh = window.innerHeight;
+      setViewportHeight(vh);
+      setScrollMax(Math.max(0, document.documentElement.scrollHeight - vh));
+    };
+    update();
+    window.addEventListener("resize", update);
+    window.addEventListener("load", update);
+    const raf = requestAnimationFrame(update);
+    const raf2 = requestAnimationFrame(update);
+    return () => {
+      cancelAnimationFrame(raf);
+      cancelAnimationFrame(raf2);
+      window.removeEventListener("resize", update);
+      window.removeEventListener("load", update);
+    };
+  }, []);
 
   // Map scroll (0-1) to vertical position (Logo height -> Footer height)
-  const top = useTransform(scrollYProgress, [0, 1], ["44px", "94vh"]);
+  const endY = viewportHeight ? viewportHeight * 0.94 : logoDotTopY;
+  const travelEndPx = Math.max(scrollMax, DETACH_SCROLL_PX + 1);
+  const top = useTransform(
+    scrollY,
+    [0, DETACH_SCROLL_PX, travelEndPx],
+    [logoDotTopY, logoDotTopY, endY]
+  );
   const smoothTop = useSpring(top, { damping: 20, stiffness: 80 });
 
-  // Fade in as the Header logo fades out
-  const opacity = useTransform(scrollYProgress, [0, 0.05], [0, 1]);
-
-  // Pulse at section transitions (roughly every 20% of scroll)
-  const scale = useTransform(
-    scrollYProgress,
-    [0, 0.18, 0.22, 0.38, 0.42, 0.58, 0.62, 0.78, 0.82, 1],
-    [1, 1, 1.4, 1, 1.4, 1, 1.4, 1, 1.4, 1]
-  );
-  const smoothScale = useSpring(scale, { damping: 15, stiffness: 100 });
-
-  // Glow intensity builds toward CTA
-  const glowIntensity = useTransform(scrollYProgress, [0, 0.5, 1], [0.5, 0.7, 1]);
+  const glowIntensity = useTransform(scrollYProgress, [0, 1], [0.55, 0.85]);
 
   return (
-    <div
-      className="fixed inset-0 pointer-events-none z-50 flex justify-center"
-      aria-hidden="true"
-    >
+    <div className="fixed inset-0 pointer-events-none z-50" aria-hidden="true">
       <motion.div
-        style={{
-          top: smoothTop,
-          opacity,
-          scale: smoothScale,
-          boxShadow: useTransform(
-            glowIntensity,
-            (v) => `0 0 ${15 + v * 10}px rgba(var(--color-persimmon-rgb),${0.4 + v * 0.3})`
-          ),
-        }}
-        className="absolute w-2.5 h-2.5 bg-persimmon rounded-full"
-      />
+        animate={{ opacity: travelingDotSuppressed ? 0 : 1 }}
+        transition={{ duration: 0.25, ease: "easeOut" }}
+      >
+        <motion.div
+          style={{
+            top: smoothTop,
+            // Note: OKLCH value is inline because opacity (${v}) is scroll-interpolated (0.55→0.85)
+            // This dynamic alpha cannot use a CSS variable. Color matches --color-persimmon.
+            boxShadow: useTransform(
+              glowIntensity,
+              (v) => `0 0 18px oklch(62.8% 0.19 48 / ${v})`
+            ),
+          }}
+          className="absolute left-1/2 -translate-x-1/2 w-[6px] h-[6px] bg-persimmon rounded-full"
+        />
+      </motion.div>
     </div>
   );
 }

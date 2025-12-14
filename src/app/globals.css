@@ -2,27 +2,52 @@
 
 /* hisoles Custom Theme */
 @theme {
-  /* Colors */
-  --color-washi: #FAF9F6;
-  --color-sumi: #1A1A1A;
-  --color-persimmon: #E85D04;
-  --color-stone: #4A4A4A;
+  /*
+   * Brand Colors in OKLCH
+   * OKLCH provides perceptual uniformity - colors with same L appear equally bright
+   * Format: oklch(Lightness Chroma Hue)
+   * HEX fallbacks provided for older browsers (CSS cascade handles this)
+   */
 
-  /* RGB variants for shadows/gradients */
-  --color-washi-rgb: 250, 249, 246;
-  --color-sumi-rgb: 26, 26, 26;
-  --color-persimmon-rgb: 232, 93, 4;
+  /* Washi - warm off-white paper */
+  --color-washi: #FAF9F6;
+  --color-washi: oklch(98.2% 0.005 106);
+
+  /* Sumi - deep ink black */
+  --color-sumi: #1A1A1A;
+  --color-sumi: oklch(18.4% 0 0);
+
+  /* Persimmon - vibrant orange accent */
+  --color-persimmon: #E85D04;
+  --color-persimmon: oklch(62.8% 0.19 48);
+
+  /* Stone - medium gray */
+  --color-stone: #4A4A4A;
+  --color-stone: oklch(36.5% 0 0);
+
+  /* Charcoal - dark gray */
+  --color-charcoal: #222222;
+  --color-charcoal: oklch(20% 0 0);
+
+  /*
+   * Color Opacity Variants
+   * Pre-defined alpha values for shadows, gradients, and overlays
+   * Naming: --color-{name}-{opacity%}
+   */
+  --color-persimmon-25: oklch(62.8% 0.19 48 / 0.25);
+  --color-persimmon-50: oklch(62.8% 0.19 48 / 0.5);
+  --color-persimmon-60: oklch(62.8% 0.19 48 / 0.6);
+  --color-sumi-40: oklch(18.4% 0 0 / 0.4);
+  --color-washi-08: oklch(98.2% 0.005 106 / 0.08);
 
   /* Fonts */
   --font-display: var(--font-general-sans);
   --font-body: var(--font-switzer);
   --font-mono: var(--font-space-mono);
 
-  /* Additional Colors */
-  --color-charcoal: #222222;
-
   /* Letter Spacing */
-  --tracking-tight-logo: -0.06em;
+  /* Tracking -20 (≈ -0.02em) */
+  --tracking-tight-logo: -0.02em;
   --tracking-wide-cta: 0.35em;
   --tracking-rotated: 0.4em;
 }
@@ -58,7 +83,26 @@ html {
   inset: 0;
   z-index: 50;
   pointer-events: none;
-  opacity: 0.04;
+  opacity: 0.02;
   mix-blend-mode: multiply;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+@keyframes tremor {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  20% {
+    transform: translate3d(-0.5px, 0.5px, 0);
+  }
+  40% {
+    transform: translate3d(0.5px, -0.5px, 0);
+  }
+  60% {
+    transform: translate3d(-0.5px, -0.5px, 0);
+  }
+  80% {
+    transform: translate3d(0.5px, 0.5px, 0);
+  }
 }

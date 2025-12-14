@@ -34,7 +34,7 @@ export function CheckoutDrawer() {
             animate={{ y: 0 }}
             exit={{ y: "100%" }}
             transition={{ type: "spring", damping: 25, stiffness: 200 }}
-            className="fixed bottom-0 left-0 right-0 md:left-auto md:w-[450px] md:top-0 md:h-full bg-washi z-[70] shadow-2xl flex flex-col rounded-t-2xl md:rounded-none"
+            className="fixed bottom-0 left-0 right-0 max-h-[85vh] md:max-h-[70vh] md:left-1/2 md:-translate-x-1/2 md:max-w-lg bg-washi z-[70] shadow-2xl flex flex-col rounded-t-2xl"
           >
             {/* Header */}
             <div className="p-6 border-b border-stone/10 flex justify-between items-center bg-washi">
@@ -110,7 +110,7 @@ export function CheckoutDrawer() {
             <div className="p-6 bg-washi border-t border-stone/10">
               <div className="flex justify-between items-center mb-4">
                 <span className="font-mono text-sm text-stone">Subtotal</span>
-                <span className="font-mono text-xl text-sumi font-bold">
+                <span className="font-mono text-xl text-sumi">
                   ${totalPrice}
                 </span>
               </div>

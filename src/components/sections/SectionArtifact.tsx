@@ -1,7 +1,8 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useScroll, useTransform } from "motion/react";
+import { useEffect, useRef } from "react";
+import { motion, useScroll, useTransform, useMotionValueEvent } from "motion/react";
+import { useSpine } from "@/components/layout/SpineProvider";
 
 export function SectionArtifact() {
   const ref = useRef<HTMLElement>(null);
@@ -10,30 +11,48 @@ export function SectionArtifact() {
     offset: ["start end", "end start"],
   });
 
-  // "Unzip" the charcoal layer to reveal the Persimmon core
-  const clipPath = useTransform(
-    scrollYProgress,
-    [0.35, 0.65],
-    ["inset(0% 0 0 0)", "inset(100% 0 0 0)"]
-  );
-  const scale = useTransform(scrollYProgress, [0.3, 0.7], [0.95, 1.05]);
-  const opacity = useTransform(scrollYProgress, [0.35, 0.45], [0, 1]);
+  const { setTravelingDotSuppressed } = useSpine();
+  const suppressedRef = useRef(false);
+
+  // The guiding dot "merges" into the product: briefly suppress the TravelingDot during emergence.
+  useMotionValueEvent(scrollYProgress, "change", (v) => {
+    const shouldSuppress = v >= 0.08 && v <= 0.26;
+    if (shouldSuppress === suppressedRef.current) return;
+    suppressedRef.current = shouldSuppress;
+    setTravelingDotSuppressed(shouldSuppress);
+  });
+
+  useEffect(() => {
+    return () => setTravelingDotSuppressed(false);
+  }, [setTravelingDotSuppressed]);
+
+  // Emergence: dot -> insole
+  const emergeScale = useTransform(scrollYProgress, [0.05, 0.25], [0.03, 1]);
+  const emergeOpacity = useTransform(scrollYProgress, [0.05, 0.16], [0, 1]);
+
+  // "Unzip" along the Meridian: charcoal splits open from the center line.
+  const unzip = useTransform(scrollYProgress, [0.38, 0.72], [0, 1]);
+  const leftX = useTransform(unzip, [0, 1], [0, -90]);
+  const rightX = useTransform(unzip, [0, 1], [0, 90]);
+  const skinOpacity = useTransform(unzip, [0, 1], [1, 0]);
+  const annotationOpacity = useTransform(scrollYProgress, [0.42, 0.52], [0, 1]);
 
   return (
     <section ref={ref} className="h-[200vh] relative z-20">
       <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
-        {/* PRODUCT CONTAINER */}
+        {/* THE ARTIFACT — top-down insole, floating in the void */}
         <motion.div
-          style={{ scale }}
-          className="relative w-[280px] h-[580px] md:w-[340px] md:h-[700px]"
+          style={{ scale: emergeScale, opacity: emergeOpacity }}
+          className="relative w-[260px] h-[560px] md:w-[320px] md:h-[680px]"
         >
-          {/* 1. INNER CORE (PERSIMMON) */}
-          <div className="absolute inset-0 bg-persimmon rounded-[100px] shadow-[0_25px_50px_rgba(var(--color-persimmon-rgb),0.3)] overflow-hidden flex items-center justify-center">
-            {/* Honeycomb Pattern */}
+          {/* INNER CORE (hidden until unzipped) */}
+          <div className="absolute inset-0 bg-persimmon rounded-[100px] shadow-[0_25px_50px_var(--color-persimmon-25)] overflow-hidden">
+            {/* Honeycomb */}
             <svg
               width="100%"
               height="100%"
               className="opacity-20 mix-blend-overlay absolute inset-0 text-washi"
+              aria-hidden="true"
             >
               <defs>
                 <pattern
@@ -55,57 +74,76 @@ export function SectionArtifact() {
               <rect width="100%" height="100%" fill="url(#honeycomb)" />
             </svg>
 
-            <div className="absolute font-mono text-washi/50 text-xs tracking-rotated -rotate-90 whitespace-nowrap z-10">
-              ENGINEERED REBOUND
+            <div className="absolute left-1/2 -translate-x-1/2 top-10 font-mono text-washi/70 text-[10px] uppercase tracking-wide-cta">
+              Honeycomb Core
             </div>
           </div>
 
-          {/* 2. OUTER SKIN (CHARCOAL) - Reveals via ClipPath */}
+          {/* OUTER SKIN (charcoal top-cloth) — splits along the Meridian */}
           <motion.div
-            style={{ clipPath }}
-            className="absolute inset-0 bg-charcoal rounded-[100px] flex items-center justify-center shadow-2xl z-20"
+            style={{ x: leftX, opacity: skinOpacity }}
+            className="absolute inset-0 rounded-[100px] overflow-hidden shadow-2xl"
           >
             <div
-              className="absolute inset-0 opacity-20"
-              style={{
-                backgroundImage:
-                  "url('https://www.transparenttextures.com/patterns/carbon-fibre.png')",
-              }}
+              className="absolute inset-0 bg-charcoal"
+              style={{ clipPath: "inset(0 49% 0 0)" }}
             />
-            <div className="text-stone font-mono text-xs tracking-rotated -rotate-90 whitespace-nowrap">
-              BREATHABLE CHARCOAL
-            </div>
+            <div
+              className="absolute inset-0 opacity-15"
+              style={{
+                clipPath: "inset(0 49% 0 0)",
+                backgroundImage:
+                  "repeating-linear-gradient(45deg, var(--color-washi-08) 0, var(--color-washi-08) 1px, transparent 1px, transparent 6px), repeating-linear-gradient(-45deg, var(--color-washi-08) 0, var(--color-washi-08) 1px, transparent 1px, transparent 6px)",
+              }}
+              aria-hidden="true"
+            />
           </motion.div>
+          <motion.div
+            style={{ x: rightX, opacity: skinOpacity }}
+            className="absolute inset-0 rounded-[100px] overflow-hidden shadow-2xl"
+          >
+            <div
+              className="absolute inset-0 bg-charcoal"
+              style={{ clipPath: "inset(0 0 0 49%)" }}
+            />
+            <div
+              className="absolute inset-0 opacity-15"
+              style={{
+                clipPath: "inset(0 0 0 49%)",
+                backgroundImage:
+                  "repeating-linear-gradient(45deg, var(--color-washi-08) 0, var(--color-washi-08) 1px, transparent 1px, transparent 6px), repeating-linear-gradient(-45deg, var(--color-washi-08) 0, var(--color-washi-08) 1px, transparent 1px, transparent 6px)",
+              }}
+              aria-hidden="true"
+            />
+          </motion.div>
+
+          {/* Seam — aligned to the Meridian */}
+          <div
+            className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-px bg-washi/10"
+            aria-hidden="true"
+          />
         </motion.div>
 
-        {/* ANNOTATIONS */}
+        {/* Minimal spec callouts (Space Mono) */}
         <motion.div
-          style={{ opacity }}
-          className="absolute left-4 md:left-24 top-1/2 -translate-y-1/2 max-w-[180px]"
+          style={{ opacity: annotationOpacity }}
+          className="absolute left-6 md:left-20 top-1/2 -translate-y-1/2 max-w-[220px]"
         >
-          <h3 className="font-body font-medium text-2xl text-sumi mb-2">
-            Hidden Support
-          </h3>
-          <div className="h-[1px] w-8 bg-persimmon mb-3" />
-          <p className="font-body text-xs text-stone leading-relaxed">
-            Structured arch support meets high-rebound cushioning.
-            <span className="block mt-2 font-mono text-[10px] text-persimmon uppercase">
-              Keep Scrolling to Unzip
-            </span>
+          <p className="font-mono text-[10px] text-stone uppercase tracking-wide-cta">
+            Charcoal top-cloth
+          </p>
+          <p className="font-body font-light text-2xl md:text-3xl text-sumi leading-[0.95] mt-3">
+            Hidden support.
           </p>
         </motion.div>
 
-        {/* SQUEEZE INDICATOR */}
         <motion.div
-          style={{ opacity }}
-          className="absolute right-4 md:right-24 bottom-32 text-right"
+          style={{ opacity: annotationOpacity }}
+          className="absolute right-6 md:right-20 bottom-28 text-right"
         >
-          <span className="font-body font-bold text-5xl text-persimmon block">
-            98%
-          </span>
-          <span className="font-mono text-[10px] uppercase tracking-widest text-stone">
-            Energy Return
-          </span>
+          <p className="font-mono text-[10px] text-stone uppercase tracking-wide-cta">
+            Rebound: <span className="text-sumi">98%</span>
+          </p>
         </motion.div>
       </div>
     </section>

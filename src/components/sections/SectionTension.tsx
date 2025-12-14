@@ -1,29 +1,56 @@
 "use client";
 
-import { ComparisonSlider } from "@/components/ui/ComparisonSlider";
-
-const COMPARISON_IMAGE =
-  "https://images.unsplash.com/photo-1600185365926-3a2ce3cdb9eb?q=80&w=2400&auto=format&fit=crop";
+import { useRef } from "react";
+import { motion, useScroll, useTransform } from "motion/react";
 
 export function SectionTension() {
-  return (
-    <section className="min-h-[120vh] w-full pt-16 pb-32 px-4 flex flex-col items-center justify-center relative">
-      <div className="max-w-4xl w-full text-center mb-16">
-        <h2 className="font-body font-light text-4xl md:text-6xl text-sumi mb-6 leading-[0.95]">
-          Gravity is
-          <br />
-          the enemy.
-        </h2>
-        <p className="font-body text-stone max-w-lg mx-auto leading-relaxed text-lg">
-          Your shoes aren&apos;t dead. The foam is. <br />
-          <span className="text-sm opacity-70">
-            By Hour 10, standard EVA foam has surrendered to the floor.
-          </span>
-        </p>
-      </div>
+  const ref = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"],
+  });
 
-      {/* DEAD SHOE SLIDER */}
-      <ComparisonSlider imageUrl={COMPARISON_IMAGE} />
+  const leftOpacity = useTransform(scrollYProgress, [0.15, 0.3], [0, 1]);
+  const rightOpacity = useTransform(scrollYProgress, [0.2, 0.35], [0, 1]);
+
+  return (
+    <section
+      ref={ref}
+      className="min-h-[180vh] w-full relative overflow-hidden"
+    >
+      <div className="sticky top-0 h-screen w-full flex">
+        {/* LEFT: Hour 1 (sharp, pristine) */}
+        <div className="w-1/2 bg-washi flex items-center justify-end pr-6 md:pr-16">
+          <motion.div style={{ opacity: leftOpacity }} className="max-w-sm text-right">
+            <p className="font-mono text-[10px] text-stone uppercase tracking-wide-cta">
+              HOUR 1
+            </p>
+            <h2 className="font-body font-light text-4xl md:text-6xl text-sumi leading-[0.95] mt-5">
+              Sharp.
+              <br />
+              <span className="text-stone">Pristine.</span>
+            </h2>
+          </motion.div>
+        </div>
+
+        {/* RIGHT: Hour 10 (blurred, vibrating) */}
+        <div className="w-1/2 bg-stone/5 backdrop-blur-[2px] flex items-center justify-start pl-6 md:pl-16">
+          <motion.div style={{ opacity: rightOpacity }} className="max-w-sm text-left">
+            <p className="font-mono text-[10px] text-stone uppercase tracking-wide-cta">
+              HOUR 10
+            </p>
+            <h2 className="font-body font-light text-4xl md:text-6xl text-sumi leading-[0.95] mt-5">
+              <span className="blur-[2px] inline-block animate-[tremor_1.1s_ease-in-out_infinite]">
+                Burning.
+              </span>
+              <br />
+              <span className="blur-[2px] inline-block animate-[tremor_1.1s_ease-in-out_infinite] text-stone">
+                Buzzing.
+              </span>
+            </h2>
+          </motion.div>
+        </div>
+      </div>
     </section>
   );
 }

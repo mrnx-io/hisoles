@@ -16,7 +16,7 @@ export function ComparisonSlider({ imageUrl }: ComparisonSliderProps) {
       <div className="absolute inset-0 bg-stone">
         <Image
           src={imageUrl}
-          alt="Dead Foam - Hour 10"
+          alt="Dead Foam - Week 12"
           fill
           className="object-cover grayscale brightness-[0.4] blur-[3px] scale-105 saturate-0"
           priority
@@ -24,7 +24,7 @@ export function ComparisonSlider({ imageUrl }: ComparisonSliderProps) {
         {/* Oppressive overlay */}
         <div className="absolute inset-0 bg-sumi/30 mix-blend-multiply" />
         {/* Vignette for weight */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,transparent_40%,rgba(var(--color-sumi-rgb),0.4)_100%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,transparent_40%,var(--color-sumi-40)_100%)]" />
         {/* Text Effect — more visible */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-sumi/10 font-body font-bold text-[10vw] leading-none tracking-tighter">
           PAIN
@@ -38,7 +38,7 @@ export function ComparisonSlider({ imageUrl }: ComparisonSliderProps) {
       >
         <Image
           src={imageUrl}
-          alt="Fresh Foam - Hour 1"
+          alt="Fresh Foam - Week 1"
           fill
           className="object-cover grayscale-[70%] contrast-150 brightness-110"
           priority
@@ -65,10 +65,10 @@ export function ComparisonSlider({ imageUrl }: ComparisonSliderProps) {
 
       {/* THE HANDLE — increased visual weight */}
       <div
-        className="absolute top-0 bottom-0 w-[2px] bg-persimmon z-20 pointer-events-none shadow-[0_0_10px_rgba(var(--color-persimmon-rgb),0.5)]"
+        className="absolute top-0 bottom-0 w-[2px] bg-persimmon z-20 pointer-events-none shadow-[0_0_10px_var(--color-persimmon-50)]"
         style={{ left: `${sliderPosition}%` }}
       >
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 bg-persimmon rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(var(--color-persimmon-rgb),0.6)] transform transition-transform group-active:scale-90 group-hover:scale-105">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 bg-persimmon rounded-full flex items-center justify-center shadow-[0_0_20px_var(--color-persimmon-60)] transform transition-transform group-active:scale-90 group-hover:scale-105">
           <div className="flex gap-[3px]">
             <div className="w-[2px] h-4 bg-washi/90 rounded-full" />
             <div className="w-[2px] h-4 bg-washi/90 rounded-full" />
@@ -78,10 +78,10 @@ export function ComparisonSlider({ imageUrl }: ComparisonSliderProps) {
 
       {/* DATA LABELS */}
       <div className="absolute bottom-6 left-6 font-mono text-[10px] text-washi bg-persimmon px-2 py-1 tracking-widest uppercase">
-        Hour 1: Rebound
+        Week 1
       </div>
       <div className="absolute bottom-6 right-6 font-mono text-[10px] text-washi bg-stone px-2 py-1 tracking-widest uppercase">
-        Hour 10: Decay
+        Week 12
       </div>
     </div>
   );

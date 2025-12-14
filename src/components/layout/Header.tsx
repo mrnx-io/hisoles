@@ -1,53 +1,75 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
-import { useCart } from "@/components/cart/CartProvider";
+import { useSpine } from "@/components/layout/SpineProvider";
 
 export function Header() {
   const { scrollY } = useScroll();
-  const { openCart, totalItems } = useCart();
+  const { setLogoDotTopY, setLogoDotBottomY } = useSpine();
+  const dotRef = useRef<HTMLSpanElement>(null);
 
-  // Header fades out as user descends into "The Void"
-  const opacity = useTransform(scrollY, [0, 60], [1, 0]);
-  const y = useTransform(scrollY, [0, 60], [0, -20]);
+  useEffect(() => {
+    const updateMeridianOrigin = () => {
+      if (!dotRef.current) return;
+      const rect = dotRef.current.getBoundingClientRect();
+      setLogoDotTopY(rect.top);
+      setLogoDotBottomY(rect.bottom);
+    };
+
+    const raf = requestAnimationFrame(updateMeridianOrigin);
+    const raf2 = requestAnimationFrame(updateMeridianOrigin);
+    if (document.fonts?.ready) {
+      void document.fonts.ready.then(updateMeridianOrigin);
+    }
+    window.addEventListener("resize", updateMeridianOrigin);
+    return () => {
+      cancelAnimationFrame(raf);
+      cancelAnimationFrame(raf2);
+      window.removeEventListener("resize", updateMeridianOrigin);
+    };
+  }, [setLogoDotBottomY, setLogoDotTopY]);
+
+  // As you scroll: "soles" fades away. The Persimmon dot is rendered by TravelingDot.
+  const solesOpacity = useTransform(scrollY, [0, 120], [1, 0]);
+  const hiOpacity = useTransform(scrollY, [0, 180], [1, 0]);
 
   return (
     <motion.header
-      style={{ opacity, y }}
-      className="fixed top-0 w-full z-40 px-6 py-8 md:px-12 flex justify-between items-center pointer-events-none mix-blend-multiply"
+      className="fixed top-0 w-full z-40 px-6 py-8 md:px-12 pointer-events-none mix-blend-multiply"
     >
-      {/* THE CENTERED ANCHOR - 'i' aligned to Meridian Line */}
-      <div className="absolute left-1/2 -translate-x-1/2 pointer-events-auto select-none">
-        <h1 className="font-display font-medium text-3xl tracking-tight-logo text-sumi whitespace-nowrap relative">
-          {/* Left side: 'h' */}
-          <span className="absolute right-full mr-[1px]">h</span>
-
-          {/* Center Anchor: 'i' */}
-          <span className="relative text-sumi">
-            i
-            {/* The Header Dot (Static) - Disappears when scrolling starts */}
-            <span className="absolute top-[0.18em] left-[62%] -translate-x-1/2 w-[6px] h-[6px] bg-persimmon rounded-full" />
-          </span>
-
-          {/* Right side: 'soles' */}
-          <span className="ml-[1px]">soles</span>
-        </h1>
-      </div>
-
-      {/* Navigation */}
-      <div className="w-full flex justify-between items-center pointer-events-auto">
-        <div className="hidden md:block font-mono text-[10px] text-stone tracking-widest uppercase opacity-60">
-          Engineered Calm
-        </div>
-        <button
-          onClick={openCart}
-          className="ml-auto group flex items-center gap-2 font-mono text-xs uppercase tracking-widest hover:text-persimmon transition-colors"
+      {/* LOGO - TOP-CENTER (per spec: "The logo hisoles sits Top-Center") */}
+      <div className="w-full pointer-events-auto select-none">
+        <h1
+          className="font-display font-medium text-3xl tracking-tight-logo text-sumi whitespace-nowrap"
+          aria-label="hisoles"
         >
-          Shop{" "}
-          <span className="text-stone group-hover:text-persimmon transition-colors">
-            ({totalItems})
+          {/* The 'i' is centered on the screen (the Meridian), so the dot becomes the origin of the Spine */}
+          <span className="grid grid-cols-[1fr_auto_1fr] items-baseline">
+            <motion.span style={{ opacity: hiOpacity }} className="justify-self-end">
+              h
+            </motion.span>
+            <motion.span
+              style={{
+                opacity: hiOpacity,
+                marginLeft: "var(--tracking-tight-logo)",
+                marginRight: "var(--tracking-tight-logo)",
+              }}
+              className="relative justify-self-center"
+            >
+              ı
+              {/* Anchor for the logo dot (the visible dot is the TravelingDot) */}
+              <span
+                ref={dotRef}
+                className="absolute top-[0.18em] left-1/2 -translate-x-1/2 w-[6px] h-[6px] opacity-0"
+                aria-hidden="true"
+              />
+            </motion.span>
+            <motion.span style={{ opacity: solesOpacity }} className="justify-self-start">
+              soles
+            </motion.span>
           </span>
-        </button>
+        </h1>
       </div>
     </motion.header>
   );
