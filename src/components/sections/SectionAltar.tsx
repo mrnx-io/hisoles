@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 import { ArrowRight } from "lucide-react";
-import { useCart } from "@/components/cart/CartProvider";
+import { useCart } from "@/components/layout/CartProvider";
 
 const PRICING = {
   onePair: { id: "trial", label: "1 Pair", price: 39 },

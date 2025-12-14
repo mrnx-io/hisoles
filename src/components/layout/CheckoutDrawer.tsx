@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence } from "motion/react";
 import { X } from "lucide-react";
-import { useCart } from "@/components/cart/CartProvider";
+import { useCart } from "@/components/layout/CartProvider";
 
 export function CheckoutDrawer() {
   const { items, isOpen, closeCart, totalPrice, addItem } = useCart();

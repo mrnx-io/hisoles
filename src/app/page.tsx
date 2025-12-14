@@ -1,16 +1,17 @@
-import { CartProvider } from "@/components/cart/CartProvider";
+import { CartProvider } from "@/components/layout/CartProvider";
 import { WashiGrain } from "@/components/layout/WashiGrain";
 import { MeridianLine } from "@/components/layout/MeridianLine";
 import { TravelingDot } from "@/components/layout/TravelingDot";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { SpineProvider } from "@/components/layout/SpineProvider";
-import { CheckoutDrawer } from "@/components/ui/CheckoutDrawer";
+import { CheckoutDrawer } from "@/components/layout/CheckoutDrawer";
 import { SectionVoid } from "@/components/sections/SectionVoid";
 import { SectionTension } from "@/components/sections/SectionTension";
 import { SectionArtifact } from "@/components/sections/SectionArtifact";
 import { SectionEcho } from "@/components/sections/SectionEcho";
 import { SectionAltar } from "@/components/sections/SectionAltar";
+import { SectionDecay } from "@/components/sections/SectionDecay";
 
 export default function Home() {
   return (
@@ -30,6 +31,7 @@ export default function Home() {
             <SectionVoid />
             <SectionArtifact />
             <SectionTension />
+            <SectionDecay />
             <SectionEcho />
             <SectionAltar />
           </main>

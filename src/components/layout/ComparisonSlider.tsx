@@ -77,10 +77,10 @@ export function ComparisonSlider({ imageUrl }: ComparisonSliderProps) {
       </div>
 
       {/* DATA LABELS */}
-      <div className="absolute bottom-6 left-6 font-mono text-[10px] text-washi bg-persimmon px-2 py-1 tracking-widest uppercase">
+      <div className="absolute bottom-6 left-6 font-mono text-[10px] text-washi bg-persimmon px-2 py-1 tracking-wide-cta uppercase">
         Week 1
       </div>
-      <div className="absolute bottom-6 right-6 font-mono text-[10px] text-washi bg-stone px-2 py-1 tracking-widest uppercase">
+      <div className="absolute bottom-6 right-6 font-mono text-[10px] text-washi bg-stone px-2 py-1 tracking-wide-cta uppercase">
         Week 12
       </div>
     </div>
