@@ -1,8 +1,10 @@
 "use client";
 
-import Link from "next/link";
+import { useOverlay } from "@/components/layout/OverlayProvider";
 
 export function Footer() {
+  const { openPanel } = useOverlay();
+
   return (
     <footer className="bg-washi text-stone py-20 px-6 md:px-12 relative z-20 overflow-hidden border-t border-stone/10">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between gap-12 relative z-10">
@@ -16,48 +18,36 @@ export function Footer() {
             soles
           </h4>
           <p className="font-body text-sm max-w-xs leading-relaxed text-stone">
-            Bio-architectural design for the 12-hour shift. <br />
-            Engineered in Japan. Worn everywhere.
+            Engineered calm for those who cannot stop.
+            <br />
+            <span className="text-stone/70">Relief is ritual.</span>
           </p>
         </div>
         <div className="flex gap-16 font-mono text-xs uppercase tracking-widest">
-          {/* Column 1: About — FAQ */}
           <div className="flex flex-col gap-4">
             <span className="text-sumi">Support</span>
-            <Link
-              href="#"
-              className="hover:text-persimmon transition-colors"
-            >
+            <button type="button" onClick={() => openPanel("about")} className="text-left hover:text-persimmon transition-colors">
               About
-            </Link>
-            <Link
-              href="#"
-              className="hover:text-persimmon transition-colors"
-            >
+            </button>
+            <button type="button" onClick={() => openPanel("faq")} className="text-left hover:text-persimmon transition-colors">
               FAQ
-            </Link>
+            </button>
           </div>
-          {/* Column 2: Contact — Legal */}
+
           <div className="flex flex-col gap-4">
             <span className="text-sumi">Company</span>
-            <Link
-              href="#"
-              className="hover:text-persimmon transition-colors"
-            >
+            <button type="button" onClick={() => openPanel("contact")} className="text-left hover:text-persimmon transition-colors">
               Contact
-            </Link>
-            <Link
-              href="#"
-              className="hover:text-persimmon transition-colors"
-            >
+            </button>
+            <button type="button" onClick={() => openPanel("legal")} className="text-left hover:text-persimmon transition-colors">
               Legal
-            </Link>
+            </button>
           </div>
         </div>
       </div>
       <div className="max-w-7xl mx-auto mt-24 pt-8 border-t border-stone/10 flex justify-between font-mono text-[10px] text-stone/60 uppercase tracking-widest">
         <span>&copy; 2025 Hisoles Inc.</span>
-        <span>Relief is Ritual</span>
+        <span>the art of standing</span>
       </div>
     </footer>
   );

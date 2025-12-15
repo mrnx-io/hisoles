@@ -1,45 +1,51 @@
 import { CartProvider } from "@/components/layout/CartProvider";
 import { WashiGrain } from "@/components/layout/WashiGrain";
-import { MeridianLine } from "@/components/layout/MeridianLine";
-import { TravelingDot } from "@/components/layout/TravelingDot";
+import { MeridianSystem } from "@/components/layout/MeridianSystem";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { SpineProvider } from "@/components/layout/SpineProvider";
 import { CheckoutDrawer } from "@/components/layout/CheckoutDrawer";
+import { ChapterRail } from "@/components/layout/ChapterRail";
 import { SectionVoid } from "@/components/sections/SectionVoid";
 import { SectionTension } from "@/components/sections/SectionTension";
+import { SectionDecay } from "@/components/sections/SectionDecay";
 import { SectionArtifact } from "@/components/sections/SectionArtifact";
 import { SectionEcho } from "@/components/sections/SectionEcho";
 import { SectionAltar } from "@/components/sections/SectionAltar";
-import { SectionDecay } from "@/components/sections/SectionDecay";
+import { OverlayProvider } from "@/components/layout/OverlayProvider";
+import { ShojiDrawer } from "@/components/layout/ShojiDrawer";
 
 export default function Home() {
   return (
-    <CartProvider>
-      <SpineProvider>
-        <div className="relative w-full min-h-screen">
-          {/* The Texture */}
-          <WashiGrain />
+    <OverlayProvider>
+      <CartProvider>
+        <SpineProvider>
+          <div className="relative w-full min-h-[100svh]">
+            {/* Texture atmosphere (fibers + noise) */}
+            <WashiGrain />
 
-          {/* Structure */}
-          <MeridianLine />
-          <TravelingDot />
-          <Header />
+            {/* Structure */}
+            <MeridianSystem />
+            <Header />
+            <ChapterRail />
 
-          {/* Flow */}
-          <main>
-            <SectionVoid />
-            <SectionArtifact />
-            <SectionTension />
-            <SectionDecay />
-            <SectionEcho />
-            <SectionAltar />
-          </main>
+            {/* Kakemono flow (best-first rhythm) */}
+            <main id="main">
+              <SectionVoid />
+              <SectionTension />
+              <SectionDecay />
+              <SectionArtifact />
+              <SectionEcho />
+              <SectionAltar />
+            </main>
 
-          <Footer />
-          <CheckoutDrawer />
-        </div>
-      </SpineProvider>
-    </CartProvider>
+            <Footer />
+
+            <CheckoutDrawer />
+            <ShojiDrawer />
+          </div>
+        </SpineProvider>
+      </CartProvider>
+    </OverlayProvider>
   );
 }

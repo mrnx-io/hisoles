@@ -8,6 +8,9 @@ import {
   type ReactNode,
 } from "react";
 
+// The narrative arc of the scroll
+export type ChapterId = "void" | "tension" | "artifact" | "decay" | "echo" | "altar";
+
 interface SpineContextValue {
   logoDotTopY: number;
   logoDotBottomY: number;
@@ -15,6 +18,9 @@ interface SpineContextValue {
   setLogoDotBottomY: (y: number) => void;
   travelingDotSuppressed: boolean;
   setTravelingDotSuppressed: (suppressed: boolean) => void;
+  // Narrative Tracking
+  activeChapter: ChapterId;
+  setActiveChapter: (id: ChapterId) => void;
 }
 
 const SpineContext = createContext<SpineContextValue | null>(null);
@@ -31,6 +37,7 @@ export function SpineProvider({ children }: { children: ReactNode }) {
   const [logoDotTopY, setLogoDotTopY] = useState(44);
   const [logoDotBottomY, setLogoDotBottomY] = useState(50);
   const [travelingDotSuppressed, setTravelingDotSuppressed] = useState(false);
+  const [activeChapter, setActiveChapter] = useState<ChapterId>("void");
 
   const value = useMemo(
     () => ({
@@ -40,8 +47,10 @@ export function SpineProvider({ children }: { children: ReactNode }) {
       setLogoDotBottomY,
       travelingDotSuppressed,
       setTravelingDotSuppressed,
+      activeChapter,
+      setActiveChapter,
     }),
-    [logoDotTopY, logoDotBottomY, travelingDotSuppressed]
+    [logoDotTopY, logoDotBottomY, travelingDotSuppressed, activeChapter]
   );
 
   return <SpineContext.Provider value={value}>{children}</SpineContext.Provider>;

@@ -2,38 +2,27 @@
 
 /* hisoles Custom Theme */
 @theme {
-  /*
-   * Brand Colors in OKLCH
-   * OKLCH provides perceptual uniformity - colors with same L appear equally bright
-   * Format: oklch(Lightness Chroma Hue)
-   * HEX fallbacks provided for older browsers (CSS cascade handles this)
-   */
-
-  /* Washi - warm off-white paper */
+  /* Washi */
   --color-washi: #FAF9F6;
   --color-washi: oklch(98.2% 0.005 106);
 
-  /* Sumi - deep ink black */
+  /* Sumi */
   --color-sumi: #1A1A1A;
   --color-sumi: oklch(18.4% 0 0);
 
-  /* Persimmon - vibrant orange accent */
+  /* Persimmon */
   --color-persimmon: #E85D04;
   --color-persimmon: oklch(62.8% 0.19 48);
 
-  /* Stone - medium gray */
+  /* Stone */
   --color-stone: #4A4A4A;
   --color-stone: oklch(36.5% 0 0);
 
-  /* Charcoal - dark gray */
+  /* Charcoal */
   --color-charcoal: #222222;
   --color-charcoal: oklch(20% 0 0);
 
-  /*
-   * Color Opacity Variants
-   * Pre-defined alpha values for shadows, gradients, and overlays
-   * Naming: --color-{name}-{opacity%}
-   */
+  /* Opacity variants */
   --color-persimmon-25: oklch(62.8% 0.19 48 / 0.25);
   --color-persimmon-50: oklch(62.8% 0.19 48 / 0.5);
   --color-persimmon-60: oklch(62.8% 0.19 48 / 0.6);
@@ -45,14 +34,13 @@
   --font-body: var(--font-switzer);
   --font-mono: var(--font-space-mono);
 
-  /* Letter Spacing */
-  /* Tracking -20 (≈ -0.02em) */
+  /* Letter spacing */
   --tracking-tight-logo: -0.02em;
   --tracking-wide-cta: 0.35em;
   --tracking-rotated: 0.4em;
 }
 
-/* Global Styles */
+/* Global */
 body {
   background-color: var(--color-washi);
   color: var(--color-sumi);
@@ -61,33 +49,87 @@ body {
   overflow-x: hidden;
 }
 
-/* Hide Scrollbar for Full Immersion */
+/* Hide scrollbar (Immersion) */
 ::-webkit-scrollbar {
   width: 0px;
   background: transparent;
 }
-
 html {
   scrollbar-width: none;
 }
 
-/* Selection Color */
+/* Selection */
 ::selection {
   background: var(--color-persimmon);
   color: var(--color-washi);
 }
 
-/* Washi Grain Texture Overlay */
+/* Focus (premium trust) */
+:focus-visible {
+  outline: 2px solid
+    color-mix(in oklab, var(--color-persimmon) 75%, transparent);
+  outline-offset: 3px;
+}
+
+/* Reduced motion: calm becomes stillness */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ===== Washi Atmosphere (NEXT 10%) =====
+   Two scanned overlays:
+   - fibers: directional paper grain
+   - noise: ultra-subtle monochrome noise
+*/
+.washi-fibers,
 .washi-grain {
   position: fixed;
   inset: 0;
-  z-index: 50;
   pointer-events: none;
-  opacity: 0.02;
+  background-repeat: repeat;
   mix-blend-mode: multiply;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
 }
 
+/* Fibers sit above content, below noise */
+.washi-fibers {
+  z-index: 9998;
+  opacity: 0.06;
+  background-size: 680px 680px;
+  background-image: image-set(
+    url("/textures/washi-fibers-512.webp") 1x,
+    url("/textures/washi-fibers-1024.webp") 2x
+  );
+}
+
+/* Grain/noise sits topmost */
+.washi-grain {
+  z-index: 9999;
+  opacity: 0.025;
+  background-size: 420px 420px;
+  background-image: image-set(
+    url("/textures/washi-noise-256.webp") 1x,
+    url("/textures/washi-noise-512.webp") 2x
+  );
+}
+
+/* Fallback for browsers without image-set */
+@supports not (background-image: image-set(url("a") 1x)) {
+  .washi-fibers {
+    background-image: url("/textures/washi-fibers-512.webp");
+  }
+  .washi-grain {
+    background-image: url("/textures/washi-noise-256.webp");
+  }
+}
+
+/* Tremor (used sparingly in Tension) */
 @keyframes tremor {
   0%,
   100% {
@@ -105,4 +147,69 @@ html {
   80% {
     transform: translate3d(0.5px, 0.5px, 0);
   }
+}
+
+.chaos-tremor {
+  animation: tremor 0.18s infinite;
+}
+
+/* Kakemono Typography Utilities */
+@layer utilities {
+  .k-kicker {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide-cta);
+    color: color-mix(in oklab, var(--color-stone) 70%, transparent);
+  }
+
+  .k-title {
+    font-family: var(--font-body);
+    font-weight: 300;
+    line-height: 0.95;
+    color: var(--color-sumi);
+    text-wrap: balance;
+  }
+
+  .k-title-xl {
+    font-size: clamp(2.25rem, 4vw, 3.75rem);
+  }
+
+  .k-title-md {
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+  }
+
+  .k-body {
+    font-family: var(--font-body);
+    color: color-mix(in oklab, var(--color-stone) 92%, transparent);
+  }
+
+  /* “Whisper text” (Space Mono ritual copy) */
+  .k-whisper {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide-cta);
+    color: color-mix(in oklab, var(--color-stone) 60%, transparent);
+  }
+}
+
+/* Meridian heartbeat (audio-less, CSS-only) */
+@keyframes meridian-heartbeat {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 0px var(--color-persimmon-50));
+  }
+  50% {
+    filter: drop-shadow(0 0 8px var(--color-persimmon-50));
+  }
+}
+
+html[data-meridian-idle="true"] .meridian-heartbeat {
+  animation: meridian-heartbeat 3.2s ease-in-out infinite;
+}
+
+html[data-meridian-idle="false"] .meridian-heartbeat {
+  animation: none;
+  filter: none;
 }

@@ -1,112 +1,114 @@
 "use client";
 
 import { motion } from "motion/react";
-import Image from "next/image";
+import { KakemonoSection } from "@/components/layout/KakemonoSection";
+import { PersimmonPhoto } from "@/components/media/PersimmonPhoto";
 
-const reviews = [
+const stories = [
   {
     quote: "I sit in my car for 20 mins after every shift. Not today.",
     role: "ER Nurse",
     time: "12h",
-    image:
-      "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=800&auto=format&fit=crop",
+    img: "/ugc/echo-1.jpg",
+    mask: "/ugc/echo-1-mask.png",
   },
   {
     quote: "My Hokas were dead. These brought them back.",
     role: "Surgical Tech",
     time: "10h",
-    image:
-      "https://images.unsplash.com/photo-1582719508461-905c673771fd?q=80&w=800&auto=format&fit=crop",
+    img: "/ugc/echo-2.jpg",
+    mask: "/ugc/echo-2-mask.png",
   },
   {
     quote: "If my feet go, I'm done. These hold me up.",
     role: "CNA",
     time: "14h",
-    image:
-      "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=800&auto=format&fit=crop",
+    img: "/ugc/echo-3.jpg",
+    mask: "/ugc/echo-3-mask.png",
+  },
+  {
+    quote: "Hour 9 used to feel like glass. Now it’s just… a floor.",
+    role: "Med Assistant",
+    time: "9h",
+    img: "/ugc/echo-4.jpg",
+    mask: "/ugc/echo-4-mask.png",
+  },
+  {
+    quote: "The relief is quiet. That’s what makes it real.",
+    role: "ICU Nurse",
+    time: "12h",
+    img: "/ugc/echo-5.jpg",
+    mask: "/ugc/echo-5-mask.png",
+  },
+  {
+    quote: "I stopped dreading the last four hours.",
+    role: "ER Tech",
+    time: "12h",
+    img: "/ugc/echo-6.jpg",
+    mask: "/ugc/echo-6-mask.png",
   },
 ];
 
 export function SectionEcho() {
   return (
-    <section className="relative py-40 px-6 bg-washi z-10 border-t border-stone/5">
-      <div className="max-w-6xl mx-auto">
-        <div className="mb-16">
-          <h2 className="font-body font-light text-4xl text-sumi leading-[0.95]">
-            Relief is ritual.
-          </h2>
+    <KakemonoSection
+      id="echo"
+      className="py-36"
+      ornaments={
+        <motion.div
+          initial={{ scale: 2, opacity: 0, rotate: 10 }}
+          whileInView={{ scale: 1, opacity: 0.82, rotate: -3 }}
+          transition={{ type: "spring", stiffness: 220, damping: 16 }}
+          viewport={{ once: true, amount: 0.5 }}
+          className="absolute bottom-10 right-10 z-30 mix-blend-multiply hidden md:block"
+        >
+          <div className="border-[3px] border-persimmon text-persimmon px-4 py-3 bg-washi/80">
+            <p className="font-mono text-[10px] font-bold uppercase tracking-widest leading-tight text-center">
+              12 Hours.
+              <br />
+              Held.
+              <br />
+              Or Free.
+            </p>
+          </div>
+        </motion.div>
+      }
+    >
+      <div className="max-w-6xl mx-auto px-6">
+        <div className="mb-16 text-center">
+          <h2 className="k-title k-title-xl">Relief is ritual.</h2>
+          <p className="k-body mt-6 text-sm max-w-md mx-auto">No stars. Just resonance.</p>
         </div>
 
-        {/* Masonry grid (per spec) */}
-        <div className="columns-1 md:columns-3 gap-8 [column-fill:_balance]">
-          {reviews.map((review, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 30 }}
+        <div className="columns-1 md:columns-2 lg:columns-3 gap-8">
+          {stories.map((s, i) => (
+            <motion.figure
+              key={i}
+              initial={{ opacity: 0, y: 18 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.15 }}
+              transition={{ delay: i * 0.06 }}
               viewport={{ once: true }}
-              className={`mb-8 break-inside-avoid bg-stone/10 relative group overflow-hidden ${
-                index === 0
-                  ? "aspect-[4/5]"
-                  : index === 1
-                    ? "aspect-[3/5]"
-                    : "aspect-[4/6]"
-              }`}
+              className="bg-washi border border-stone/10 shadow-sm mb-8 break-inside-avoid overflow-hidden"
             >
-              {/* Stylized Image — high contrast B&W */}
-              <Image
-                src={review.image}
-                alt={`${review.role} testimonial`}
-                fill
-                className="object-cover grayscale brightness-75 contrast-150 transition-transform duration-700 group-hover:scale-105"
-              />
-              {/* Stronger overlay to abstract stock feel */}
-              <div className="absolute inset-0 bg-gradient-to-t from-sumi via-sumi/70 to-sumi/30" />
-
-              {/* PERSIMMON INSOLE ACCENT - The ONLY color in B&W photos (per spec) */}
-              {/* "The only color in these photos is the Persimmon accent of the insole (peeking out of a shoe or sitting on a bench)" */}
-              <div className="absolute bottom-24 right-6 w-8 h-16 opacity-90">
-                <div className="relative w-full h-full">
-                  {/* Stylized insole shape peeking out */}
-                  <div className="absolute inset-0 bg-persimmon rounded-[40%] rotate-12 shadow-lg shadow-persimmon/30" />
-                  {/* Honeycomb texture hint */}
-                  <div className="absolute inset-1 opacity-30">
-                    <svg viewBox="0 0 20 34" className="w-full h-full text-washi">
-                      <pattern id={`honeycomb-${index}`} x="0" y="0" width="10" height="17" patternUnits="userSpaceOnUse">
-                        <path d="M5 0 L10 4.25 L10 12.75 L5 17 L0 12.75 L0 4.25 Z" fill="none" stroke="currentColor" strokeWidth="0.5" />
-                      </pattern>
-                      <rect width="100%" height="100%" fill={`url(#honeycomb-${index})`} />
-                    </svg>
-                  </div>
-                </div>
+              <div className="relative aspect-[4/5] bg-stone/5">
+                <PersimmonPhoto src={s.img} accentMaskSrc={s.mask} alt={`${s.role} relief moment`} />
               </div>
 
-              {/* Text Overlay — more prominent */}
-              <div className="absolute bottom-0 left-0 p-8 w-full text-washi">
-                <p className="font-body text-lg leading-snug mb-4">
-                  &ldquo;{review.quote}&rdquo;
-                </p>
-                <div className="flex justify-between font-mono text-[10px] uppercase tracking-widest opacity-80">
-                  <span>{review.role}</span>
-                  <span>{review.time}</span>
+              <figcaption className="p-7">
+                <p className="k-title k-title-md text-[18px] leading-tight">&ldquo;{s.quote}&rdquo;</p>
+                <div className="mt-4 flex justify-between font-mono text-[9px] uppercase tracking-widest text-stone/60">
+                  <span>{s.role}</span>
+                  <span>{s.time}</span>
                 </div>
-              </div>
-            </motion.div>
+
+                <div className="mt-6 h-px bg-stone/10 relative">
+                  <span className="absolute -top-[3px] left-0 w-2 h-2 bg-persimmon rounded-full shadow-[0_0_10px_var(--color-persimmon-50)]" />
+                </div>
+              </figcaption>
+            </motion.figure>
           ))}
         </div>
       </div>
-
-      {/* Digital Hanko (bottom-right, per spec) */}
-      <div className="absolute bottom-12 right-6 md:right-12 z-20 mix-blend-multiply">
-        <div className="border-2 border-persimmon text-persimmon px-5 py-4 rotate-3 opacity-85 bg-washi/40 backdrop-blur-[1px]">
-          <p className="font-mono text-[10px] uppercase tracking-wide-cta leading-tight">
-            12 HOURS.
-            <br />
-            HELD.
-          </p>
-        </div>
-      </div>
-    </section>
+    </KakemonoSection>
   );
 }

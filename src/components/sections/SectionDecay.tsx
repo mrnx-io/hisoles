@@ -1,19 +1,27 @@
 "use client";
 
-import { ComparisonSlider } from "@/components/layout/ComparisonSlider";
+import { ScrollComparison } from "@/components/layout/ScrollComparison";
+import { KakemonoSection } from "@/components/layout/KakemonoSection";
 
 export function SectionDecay() {
   return (
-    <section className="min-h-screen w-full flex flex-col items-center justify-center py-20 px-6 bg-washi">
-      <div className="mb-10 text-center">
-        <p className="font-mono text-[10px] text-stone uppercase tracking-wide-cta mb-4">
-          Material Truth
-        </p>
-        <h2 className="font-body font-light text-3xl md:text-4xl text-sumi leading-[0.95]">
-          Foam dies. Support fades.
-        </h2>
+    <KakemonoSection id="decay" bleed className="min-h-auto">
+      <div className="w-full flex flex-col items-center">
+        <div className="py-20 text-center px-6">
+          <p className="k-kicker mb-4">Dead Shoe Syndrome</p>
+          <h2 className="k-title k-title-xl">Your shoes aren&apos;t dead. The foam is.</h2>
+          <p className="k-body mt-6 text-lg max-w-md mx-auto">
+            Support fades. Architecture endures.
+          </p>
+        </div>
+
+        <ScrollComparison
+          freshImageUrl="/images/deadshoe-week1.jpg"
+          deadImageUrl="/images/deadshoe-week12.jpg"
+          freshLabel="Week 1"
+          deadLabel="Week 12"
+        />
       </div>
-      <ComparisonSlider imageUrl="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?q=80&w=1200&auto=format&fit=crop" />
-    </section>
+    </KakemonoSection>
   );
 }
