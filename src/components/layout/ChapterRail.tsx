@@ -99,7 +99,7 @@ export function ChapterRail() {
               className={cn(
                 "absolute -right-4 rounded-full",
                 isActive
-                  ? "bg-persimmon shadow-[0_0_6px_var(--color-persimmon-25)]"
+                  ? "bg-persimmon shadow-[0_0_8px_var(--color-persimmon-25)]"
                   : "bg-transparent"
               )}
             />
