@@ -6,11 +6,6 @@ import { cn } from "@/lib/utils";
 import { CHAPTERS } from "@/components/layout/chapters";
 import { usePrefersReducedMotion } from "@/lib/usePrefersReducedMotion";
 
-// Unified timing constants (match CSS tokens)
-const DURATION_ATTENTION = 0.6;
-const DURATION_WHISPER = 0.4;
-const DELAY_MA = 0.08;
-const EASE_EMERGE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
 export function ChapterRail() {
   const reducedMotion = usePrefersReducedMotion();
@@ -30,7 +25,7 @@ export function ChapterRail() {
   return (
     <nav
       aria-label="Page chapters"
-      className="fixed right-8 top-1/2 -translate-y-1/2 z-[55] hidden md:flex flex-col gap-10"
+      className="fixed right-6 md:right-12 top-1/2 -translate-y-1/2 z-[55] hidden md:flex flex-col gap-8"
     >
       {CHAPTERS.map((chapter) => {
         const isActive = activeChapter === chapter.id;
@@ -49,58 +44,34 @@ export function ChapterRail() {
               initial={false}
               animate={{
                 opacity: isActive ? 1 : 0,
-                x: isActive ? -28 : 0,
-                scale: isActive ? 1 : 0.92,
-                filter: isActive ? "blur(0px)" : "blur(3px)",
+                x: isActive ? -32 : 0,
+                filter: isActive ? "blur(0px)" : "blur(4px)",
               }}
-              transition={{
-                duration: reducedMotion ? 0 : DURATION_ATTENTION,
-                delay: isActive && !reducedMotion ? DELAY_MA : 0,
-                ease: EASE_EMERGE,
-              }}
-              className="absolute right-0 whitespace-nowrap font-mono text-[9px] tracking-widest text-persimmon/85 uppercase origin-right"
+              transition={{ duration: 0.5, ease: "circOut" }}
+              className="absolute right-0 whitespace-nowrap font-mono text-[9px] tracking-widest text-persimmon uppercase origin-right"
             >
               {chapter.label}
             </motion.span>
 
-            {/* Kanji - scales and fades with synchronized timing */}
-            <motion.div
-              initial={false}
-              animate={{
-                scale: isActive ? 1.08 : 0.92,
-                opacity: isActive ? 1 : 0.15,
-                filter: isActive ? "blur(0px)" : "blur(0.3px)",
-              }}
-              transition={{
-                duration: reducedMotion ? 0 : DURATION_ATTENTION,
-                ease: EASE_EMERGE,
-              }}
+            {/* Kanji */}
+            <div
               className={cn(
-                "font-kanji text-xl leading-none select-none absolute right-0 w-6 text-center",
-                isActive ? "text-sumi" : "text-stone group-hover:opacity-25"
+                "font-display text-xl leading-none transition-all duration-700 select-none absolute right-0 w-6 text-center",
+                isActive
+                  ? "text-sumi scale-110 blur-0"
+                  : "text-stone/20 scale-90 blur-[0.5px] group-hover:text-stone/40"
               )}
             >
               {chapter.kanji}
-            </motion.div>
+            </div>
 
-            {/* Indicator dot - ink drop effect */}
-            <motion.div
-              initial={false}
-              animate={{
-                width: isActive ? 4 : 2,
-                height: isActive ? 4 : 2,
-                opacity: isActive ? 1 : 0,
-              }}
-              transition={{
-                duration: reducedMotion ? 0 : DURATION_WHISPER,
-                delay: isActive && !reducedMotion ? DELAY_MA * 1.5 : 0,
-                ease: EASE_EMERGE,
-              }}
+            {/* Indicator dot */}
+            <div
               className={cn(
-                "absolute -right-4 rounded-full",
+                "absolute -right-3 w-1 h-1 rounded-full transition-all duration-500",
                 isActive
-                  ? "bg-persimmon shadow-[0_0_8px_var(--color-persimmon-25)]"
-                  : "bg-transparent"
+                  ? "bg-persimmon shadow-[0_0_8px_var(--color-persimmon)]"
+                  : "bg-transparent group-hover:bg-stone/30"
               )}
             />
           </button>
