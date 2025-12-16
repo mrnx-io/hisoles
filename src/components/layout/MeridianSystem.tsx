@@ -133,6 +133,37 @@ export function MeridianSystem() {
     <>
       {/* MERIDIAN LINE (structure) */}
       <div className="fixed inset-0 pointer-events-none z-[15] flex justify-center" aria-hidden="true">
+        {/* Sumi breath - continuous ink diffusion effect (replaces per-section PaperFrame crease) */}
+        <div
+          className="absolute inset-y-0 left-1/2 -translate-x-1/2"
+          style={{
+            width: '180px',
+            background: `linear-gradient(
+              90deg,
+              transparent 0%,
+              rgba(26,26,26,0.02) 30%,
+              rgba(26,26,26,0.035) 50%,
+              rgba(26,26,26,0.02) 70%,
+              transparent 100%
+            )`,
+            maskImage: 'linear-gradient(to bottom, transparent 0%, black 3%, black 97%, transparent 100%)',
+            WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 3%, black 97%, transparent 100%)',
+          }}
+        />
+        {/* Warm persimmon breath - extremely subtle warmth at edges */}
+        <div
+          className="absolute inset-y-0 left-1/2 -translate-x-1/2"
+          style={{
+            width: '280px',
+            background: `radial-gradient(
+              ellipse 100% 50% at 50% 50%,
+              rgba(232,93,4,0.006) 0%,
+              transparent 60%
+            )`,
+            maskImage: 'linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%)',
+            WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%)',
+          }}
+        />
         <div className="relative w-px" style={lineStyle}>
           {/* Base line */}
           <div className="absolute inset-0 bg-stone opacity-15" />
