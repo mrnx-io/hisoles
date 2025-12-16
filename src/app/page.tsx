@@ -1,5 +1,4 @@
 import { CartProvider } from "@/components/layout/CartProvider";
-import { WashiGrain } from "@/components/layout/WashiGrain";
 import { MeridianSystem } from "@/components/layout/MeridianSystem";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -21,9 +20,6 @@ export default function Home() {
       <CartProvider>
         <SpineProvider>
           <div className="relative w-full min-h-[100svh]">
-            {/* Texture atmosphere (fibers + noise) */}
-            <WashiGrain />
-
             {/* Structure */}
             <MeridianSystem />
             <Header />

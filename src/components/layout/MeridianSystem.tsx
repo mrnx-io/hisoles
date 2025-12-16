@@ -16,6 +16,13 @@ import { cn } from "@/lib/utils";
 
 const DETACH_SCROLL_PX = 120;
 
+// Unified timing constants (match CSS tokens)
+const DURATION_BREATH = 3.6;
+const DURATION_ATTENTION = 0.6;
+const DELAY_MA = 0.08;
+const EASE_EMERGE: [number, number, number, number] = [0.16, 1, 0.3, 1];
+const EASE_BREATH: [number, number, number, number] = [0.37, 0, 0.63, 1];
+
 type Marker = { id: string; p: number };
 
 export function MeridianSystem() {
@@ -111,8 +118,8 @@ export function MeridianSystem() {
   const smoothProgress = useSpring(progress, { damping: 30, stiffness: 160, mass: 0.25 });
   const renderedProgress = reducedMotion ? progress : smoothProgress;
 
-  const scaleY = useTransform(scrollVelocity, [-2000, 0, 2000], [1.5, 1, 1.5]);
-  const scaleX = useTransform(scrollVelocity, [-2000, 0, 2000], [0.8, 1, 0.8]);
+  const scaleY = useTransform(scrollVelocity, [-2000, 0, 2000], [1.4, 1, 1.4]);
+  const scaleX = useTransform(scrollVelocity, [-2000, 0, 2000], [0.85, 1, 0.85]);
 
   const lineStyle = useMemo(
     () => ({
@@ -127,28 +134,52 @@ export function MeridianSystem() {
       {/* MERIDIAN LINE (structure) */}
       <div className="fixed inset-0 pointer-events-none z-[15] flex justify-center" aria-hidden="true">
         <div className="relative w-px" style={lineStyle}>
+          {/* Base line */}
           <div className="absolute inset-0 bg-stone opacity-15" />
 
-          {/* Ink progress */}
+          {/* Ink progress - gradient fade */}
           <motion.div
             style={{ scaleY: renderedProgress, transformOrigin: "top" }}
-            className="absolute inset-0 bg-sumi opacity-20"
+            className="absolute inset-0 bg-gradient-to-b from-sumi/25 via-sumi/20 to-sumi/15"
           />
 
-          {/* Chapter stitches */}
-          {markers.map((m) => {
+          {/* Chapter stitches - differentiated markers */}
+          {markers.map((m, index) => {
             const isActive = activeChapter === m.id;
             return (
-              <div
+              <motion.div
                 key={m.id}
-                className={cn(
-                  "absolute left-1/2 -translate-x-1/2 w-[5px] h-[5px] rounded-full transition-all duration-700",
-                  isActive
-                    ? "bg-persimmon shadow-[0_0_14px_var(--color-persimmon-50)] meridian-heartbeat"
-                    : "bg-stone/20"
-                )}
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{
+                  delay: index * DELAY_MA,
+                  duration: DURATION_ATTENTION,
+                  ease: EASE_EMERGE,
+                }}
+                className="absolute left-1/2 -translate-x-1/2"
                 style={{ top: `${m.p * 100}%` }}
-              />
+              >
+                {/* Outer ring (active only) */}
+                <motion.div
+                  initial={false}
+                  animate={{
+                    scale: isActive ? 1 : 0,
+                    opacity: isActive ? 1 : 0,
+                  }}
+                  transition={{ duration: DURATION_ATTENTION * 0.7, ease: EASE_EMERGE }}
+                  className="absolute w-3 h-3 -left-[4.5px] -top-[4.5px] rounded-full border border-persimmon/30"
+                />
+                {/* Inner dot */}
+                <div
+                  className={cn(
+                    "w-[5px] h-[5px] rounded-full transition-all",
+                    isActive
+                      ? "bg-persimmon shadow-[0_0_8px_var(--color-persimmon-50)] meridian-heartbeat"
+                      : "bg-stone/25"
+                  )}
+                  style={{ transitionDuration: `${DURATION_ATTENTION * 1000}ms` }}
+                />
+              </motion.div>
             );
           })}
         </div>
@@ -168,50 +199,54 @@ export function MeridianSystem() {
             }}
             className="absolute left-1/2 -translate-x-1/2"
           >
+            {/* Ink wash halo (replaces SVG ring) - washi-inspired watercolor bleed */}
             {!reducedMotion && (
-              <motion.svg
-                width="44"
-                height="44"
-                viewBox="0 0 44 44"
-                className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 opacity-25"
+              <motion.div
                 animate={
-                  isIdle ? { rotate: [0, 9, -6, 0], scale: [1, 1.03, 1] } : { rotate: 0, scale: 1 }
+                  isIdle
+                    ? { scale: [1, 1.15, 1], opacity: [0.15, 0.25, 0.15] }
+                    : { scale: 1, opacity: 0 }
                 }
-                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-              >
-                <circle
-                  cx="22"
-                  cy="22"
-                  r="16"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1"
-                  className="text-stone"
-                  strokeLinecap="round"
-                  strokeDasharray="60 40"
-                />
-              </motion.svg>
+                transition={{
+                  duration: DURATION_BREATH,
+                  repeat: Infinity,
+                  ease: EASE_BREATH,
+                }}
+                className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-full"
+                style={{
+                  background: `radial-gradient(
+                    circle,
+                    var(--color-persimmon-25) 0%,
+                    var(--color-persimmon-25) 15%,
+                    transparent 60%
+                  )`,
+                  filter: "blur(4px)",
+                }}
+              />
             )}
 
+            {/* Core dot - refined breathing */}
             <motion.div
               animate={
                 reducedMotion
                   ? { scale: 1, boxShadow: "0 0 0px var(--color-persimmon-50)" }
                   : isIdle
                   ? {
-                      scale: [1, 1.25, 1],
+                      scale: [1, 1.18, 1],
                       boxShadow: [
                         "0 0 0px var(--color-persimmon-50)",
-                        "0 0 12px var(--color-persimmon-50)",
+                        "0 0 10px var(--color-persimmon-50)",
                         "0 0 0px var(--color-persimmon-50)",
                       ],
                     }
                   : { scale: 1, boxShadow: "0 0 0px var(--color-persimmon-50)" }
               }
               transition={
-                reducedMotion ? { duration: 0 } : { duration: 3, repeat: Infinity, ease: "easeInOut" }
+                reducedMotion
+                  ? { duration: 0 }
+                  : { duration: DURATION_BREATH, repeat: Infinity, ease: EASE_BREATH }
               }
-              className="w-[6px] h-[6px] bg-persimmon rounded-full"
+              className="w-[5px] h-[5px] bg-persimmon rounded-full"
             />
           </motion.div>
         </motion.div>

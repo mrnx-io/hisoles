@@ -1,4 +1,5 @@
 import { ImageResponse } from "next/og";
+import { COLORS } from "@/lib/colors";
 
 /**
  * Brand colors for ImageResponse (next/og)
@@ -7,12 +8,9 @@ import { ImageResponse } from "next/og";
  * - CSS variables (var(--color-*))
  * - OKLCH color format
  *
- * These HEX values MUST match the source of truth in: src/app/globals.css @theme block
- * If brand colors change, update both locations.
+ * Colors imported from centralized source: src/lib/colors.ts
  */
-export const WASHI = "#FAF9F6"; // --color-washi
-export const SUMI = "#1A1A1A"; // --color-sumi
-export const PERSIMMON = "#E85D04"; // --color-persimmon
+const { washi: WASHI, sumi: SUMI, persimmon: PERSIMMON } = COLORS;
 
 /**
  * Typography-based proportions derived from the homepage logo:

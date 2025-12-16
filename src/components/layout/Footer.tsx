@@ -6,7 +6,7 @@ export function Footer() {
   const { openPanel } = useOverlay();
 
   return (
-    <footer className="bg-washi text-stone py-20 px-6 md:px-12 relative z-20 overflow-hidden border-t border-stone/10">
+    <footer className="text-stone py-20 px-6 md:px-12 relative z-20 overflow-hidden border-t border-stone/10 bg-washi">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between gap-12 relative z-10">
         <div>
           <h4 className="font-display font-medium text-sumi text-2xl tracking-tight-logo mb-6 inline-block">

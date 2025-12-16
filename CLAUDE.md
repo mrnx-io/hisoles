@@ -2,6 +2,23 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Mandatory: Proactive Skill Usage
+
+**Before responding to ANY user request, you MUST:**
+
+1. Mentally scan available Superpowers skills
+2. If ANY skill has even 1% relevance → Use the `Skill` tool to read it
+3. Announce: "I'm using [skill name] for this task"
+4. Follow the skill's workflow exactly
+
+**This is automated behavior, not optional.** Do not rationalize skipping skills with thoughts like "this is simple" or "I'll just do it quickly."
+
+Key skills to check:
+- `superpowers:brainstorm` - Before implementing features or making design decisions
+- `superpowers:write-plan` - For multi-step implementation tasks
+- `superpowers:execute-plan` - When executing approved plans
+- `superpowers:code-reviewer` - After writing significant code
+
 ## Commands
 
 ```bash

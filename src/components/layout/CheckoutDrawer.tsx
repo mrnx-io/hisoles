@@ -50,7 +50,7 @@ export function CheckoutDrawer() {
             transition={{ type: "spring", damping: 25, stiffness: 200 }}
             className="fixed bottom-0 left-0 right-0 max-h-[85vh] md:max-h-[70vh] md:left-1/2 md:-translate-x-1/2 md:max-w-lg bg-washi z-[70] shadow-2xl flex flex-col rounded-t-2xl border border-stone/10"
           >
-            <div className="p-6 border-b border-stone/10 flex justify-between items-center bg-washi">
+            <div className="p-6 border-b border-stone/10 flex justify-between items-center">
               <h3 className="font-body font-medium text-xl text-sumi">Your Shift</h3>
               <button type="button" onClick={closeCart} className="hover:text-persimmon transition-colors" aria-label="Close cart">
                 <X size={20} />
@@ -131,7 +131,7 @@ export function CheckoutDrawer() {
               )}
             </div>
 
-            <div className="p-6 bg-washi border-t border-stone/10">
+            <div className="p-6 border-t border-stone/10">
               <div className="flex justify-between items-center mb-4">
                 <span className="font-mono text-sm text-stone">Subtotal</span>
                 <span className="font-mono text-xl text-sumi">${totalPrice}</span>

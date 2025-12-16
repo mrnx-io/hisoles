@@ -33,85 +33,117 @@ export function SectionAltar() {
     <KakemonoSection id="altar" bleed>
       <motion.div
         ref={ref}
-        className="relative min-h-[100svh] pt-36 pb-24 px-6 flex flex-col items-center justify-center bg-washi"
+        className="relative min-h-[100svh] py-40 px-6 flex flex-col items-center justify-center"
       >
-        {/* Meridian widens into altar */}
+        {/* Meridian widens into altar - subtle Ma presence */}
         <div className="absolute inset-0 flex justify-center pointer-events-none" aria-hidden="true">
           <motion.div
             style={{ scaleX: blockScaleX, transformOrigin: "center" }}
-            className="w-full max-w-xl h-full bg-stone/5 border-x border-stone/10"
+            className="w-full max-w-lg h-full bg-stone/[0.03] border-x border-stone/[0.06]"
           />
         </div>
 
-        <div className="max-w-xl w-full relative z-20">
-          <div className="text-center mb-16">
-            <span className="k-kicker mb-4 block">The Altar</span>
+        <div className="max-w-md w-full relative z-20">
+          {/* Header with Ma spacing */}
+          <div className="text-center mb-20">
+            <span className="k-kicker mb-6 block">The Altar</span>
             <h2 className="k-title k-title-xl">Start the shift.</h2>
-            <p className="k-body mt-6 text-sm max-w-md mx-auto">
+            <p className="k-body mt-8 text-sm max-w-sm mx-auto">
               Quiet, structured relief — the kind you don&apos;t have to think about.
             </p>
           </div>
 
-          <div className="grid grid-cols-2 gap-4 mb-8">
+          {/* Pricing options - Kanso unified form, Wabi-sabi organic glow */}
+          <div className="flex flex-col sm:flex-row gap-6 mb-12">
             {/* 1 Pair */}
             <button
               type="button"
               onClick={() => setSelection("onePair")}
-              className={`h-20 border px-5 flex flex-col items-center justify-center transition-colors ${
+              className={`flex-1 py-8 px-6 border transition-all duration-500 ${
                 selection === "onePair"
-                  ? "border-sumi text-sumi"
-                  : "border-stone/20 text-stone hover:border-stone/40"
+                  ? "border-sumi bg-transparent"
+                  : "border-stone/15 bg-transparent hover:border-stone/30"
               }`}
               aria-pressed={selection === "onePair"}
             >
-              <span className="font-body font-light text-lg leading-none">{PRICING.onePair.label}</span>
-              <span className="k-whisper mt-2">${PRICING.onePair.price} · {PRICING.onePair.note}</span>
+              <div className="flex flex-col items-center gap-3">
+                <span
+                  className={`w-2 h-2 rounded-full transition-all duration-500 ${
+                    selection === "onePair" ? "bg-sumi" : "bg-stone/20"
+                  }`}
+                />
+                <span className="font-body font-light text-xl leading-none">
+                  {PRICING.onePair.label}
+                </span>
+                <span className="k-whisper">
+                  ${PRICING.onePair.price} · {PRICING.onePair.note}
+                </span>
+              </div>
             </button>
 
-            {/* 2 Pairs (brushstroke highlight) */}
+            {/* 2 Pairs - organic persimmon glow emphasis */}
             <button
               type="button"
               onClick={() => setSelection("twoPairs")}
-              className={`relative h-20 px-5 flex flex-col items-center justify-center transition-opacity ${
-                selection === "twoPairs" ? "opacity-100" : "opacity-85 hover:opacity-100"
-              } bg-persimmon text-washi overflow-hidden`}
+              className={`flex-1 py-8 px-6 border transition-all duration-500 ${
+                selection === "twoPairs"
+                  ? "border-persimmon/60 bg-persimmon/5 shadow-[0_0_20px_var(--color-persimmon-25)]"
+                  : "border-stone/15 bg-transparent hover:border-persimmon/30 hover:bg-persimmon/[0.02]"
+              }`}
               aria-pressed={selection === "twoPairs"}
             >
-              <span
-                className="absolute inset-0 opacity-25 mix-blend-multiply"
-                style={{
-                  backgroundImage: "url(/brushstroke.svg)",
-                  backgroundRepeat: "no-repeat",
-                  backgroundPosition: "center",
-                  backgroundSize: "120% 120%",
-                }}
-                aria-hidden="true"
-              />
-              <span className="relative font-body font-light text-lg leading-none">{PRICING.twoPairs.label}</span>
-              <span className="relative k-whisper mt-2 text-washi/85">
-                ${PRICING.twoPairs.price} · {PRICING.twoPairs.note}
-              </span>
+              <div className="flex flex-col items-center gap-3">
+                <span
+                  className={`w-2 h-2 rounded-full transition-all duration-500 ${
+                    selection === "twoPairs"
+                      ? "bg-persimmon shadow-[0_0_8px_var(--color-persimmon-50)]"
+                      : "bg-stone/20"
+                  }`}
+                />
+                <span className="font-body font-light text-xl leading-none">
+                  {PRICING.twoPairs.label}
+                </span>
+                <span className="k-whisper">
+                  ${PRICING.twoPairs.price} · {PRICING.twoPairs.note}
+                </span>
+                <span className="k-whisper text-persimmon/70 mt-1">recommended</span>
+              </div>
             </button>
           </div>
 
+          {/* CTA - minimal motion, sumi to persimmon transition */}
           <button
             type="button"
             onClick={handleCheckout}
-            className="w-full h-16 bg-persimmon text-washi flex items-center justify-center gap-4 font-body text-lg uppercase tracking-widest hover:brightness-95 transition-[filter] duration-300 group"
+            className="group w-full h-14 bg-sumi text-washi flex items-center justify-center gap-3 font-body text-base uppercase tracking-widest transition-all duration-500 hover:bg-persimmon"
           >
-            Start the Shift
-            <ArrowRight size={22} className="group-hover:translate-x-2 transition-transform duration-300" />
+            <span>Start the Shift</span>
+            <ArrowRight
+              size={18}
+              strokeWidth={1.5}
+              className="transition-transform duration-500 group-hover:translate-x-1"
+            />
           </button>
 
-          <motion.p style={{ opacity: whisperOpacity }} className="mt-6 text-center k-whisper">
+          {/* Whisper copy */}
+          <motion.p style={{ opacity: whisperOpacity }} className="mt-8 text-center k-whisper">
             {selection === "onePair"
               ? ">> rotate for longevity. add 2nd pair for $29 in checkout."
               : ">> rotation extends the ritual."}
           </motion.p>
 
-          <div className="mt-10 flex justify-between items-center text-stone/60 font-mono text-[10px] uppercase tracking-widest">
-            <span>90-day guarantee</span>
-            <span>Free returns</span>
+          {/* Trust signals - elevated with Ma separation */}
+          <div className="mt-16 pt-8 border-t border-stone/10">
+            <div className="flex justify-center gap-12 text-stone/50 font-mono text-[10px] uppercase tracking-widest">
+              <span className="flex items-center gap-2">
+                <span className="w-1.5 h-1.5 bg-stone/30 rounded-full" />
+                90-day guarantee
+              </span>
+              <span className="flex items-center gap-2">
+                <span className="w-1.5 h-1.5 bg-stone/30 rounded-full" />
+                Free returns
+              </span>
+            </div>
           </div>
         </div>
       </motion.div>

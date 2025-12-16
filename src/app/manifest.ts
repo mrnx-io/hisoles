@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { COLORS } from "@/lib/colors";
 
 /**
  * Web App Manifest for PWA support
@@ -6,8 +7,7 @@ import type { MetadataRoute } from "next";
  * Technical constraint: PWA manifest spec requires literal color values.
  * CSS variables and OKLCH are not supported.
  *
- * These HEX values MUST match the source of truth in: src/app/globals.css @theme block
- * If brand colors change, update both locations.
+ * Colors imported from centralized source: src/lib/colors.ts
  */
 export default function manifest(): MetadataRoute.Manifest {
   return {
@@ -16,8 +16,8 @@ export default function manifest(): MetadataRoute.Manifest {
     description: "Engineered calm for those who cannot stop.",
     start_url: "/",
     display: "standalone",
-    background_color: "#FAF9F6", // --color-washi
-    theme_color: "#1A1A1A", // --color-sumi
+    background_color: COLORS.washi,
+    theme_color: COLORS.sumi,
     icons: [
       {
         src: "/icon/16",

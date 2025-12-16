@@ -67,7 +67,7 @@ export function SectionTension() {
           </div>
 
           {/* LEFT: Calm (Hour 1) */}
-          <div className="w-full md:w-1/2 min-h-[60svh] md:min-h-[100svh] bg-washi border-r border-stone/10 flex items-center justify-end pr-6 md:pr-16 z-10">
+          <div className="w-full md:w-1/2 min-h-[60svh] md:min-h-[100svh] border-r border-stone/10 flex items-center justify-end pr-6 md:pr-16 z-10">
             <div className="text-right py-20">
               <span className="w-2 h-2 bg-sumi rounded-full mb-4 inline-block" />
               <p className="k-kicker">08:00 — Hour 1</p>
@@ -89,7 +89,7 @@ export function SectionTension() {
                 skewX: useTransform(skew, (v) => `${v}deg`),
               }}
             >
-              <span className="w-2 h-2 bg-persimmon rounded-full mb-4 inline-block shadow-[0_0_10px_var(--color-persimmon)]" />
+              <span className="w-2 h-2 bg-persimmon rounded-full mb-4 inline-block shadow-[0_0_8px_var(--color-persimmon-25)]" />
               <p className="k-kicker text-persimmon">18:00 — Hour 10</p>
 
               <div className="relative mt-4">
@@ -100,7 +100,7 @@ export function SectionTension() {
               </div>
 
               <p className="k-body mt-4 max-w-[240px] text-stone/60">
-                The floor has won. You&apos;re still standing.
+                You&apos;re still standing.
               </p>
             </motion.div>
           </div>

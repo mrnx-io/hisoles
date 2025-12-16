@@ -76,7 +76,7 @@ export function ScrollComparison({
           {/* Meridian wiper */}
           <motion.div
             style={{ left: linePosition }}
-            className="absolute top-0 bottom-0 w-px bg-persimmon z-20 shadow-[0_0_20px_var(--color-persimmon)]"
+            className="absolute top-0 bottom-0 w-px bg-persimmon z-20 shadow-[0_0_12px_var(--color-persimmon-25)]"
           />
         </div>
 

@@ -28,7 +28,8 @@ export function KakemonoSection({
   const ref = useRef<HTMLElement>(null);
   const { setActiveChapter } = useSpine();
 
-  const isInView = useInView(ref, { amount: 0.4 });
+  // Lower threshold (0.25) ensures shorter sections like SectionDecay still trigger
+  const isInView = useInView(ref, { amount: 0.25 });
 
   useEffect(() => {
     if (isInView) setActiveChapter(id);

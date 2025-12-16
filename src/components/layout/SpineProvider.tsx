@@ -8,8 +8,8 @@ import {
   type ReactNode,
 } from "react";
 
-// The narrative arc of the scroll
-export type ChapterId = "void" | "tension" | "artifact" | "decay" | "echo" | "altar";
+// The narrative arc of the scroll (matches page flow order)
+export type ChapterId = "void" | "tension" | "decay" | "artifact" | "echo" | "altar";
 
 interface SpineContextValue {
   logoDotTopY: number;

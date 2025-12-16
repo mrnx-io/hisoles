@@ -27,14 +27,14 @@ const stories = [
     mask: "/ugc/echo-3-mask.png",
   },
   {
-    quote: "Hour 9 used to feel like glass. Now it’s just… a floor.",
+    quote: "Hour 9 used to feel like glass. Now it's just… a floor.",
     role: "Med Assistant",
     time: "9h",
     img: "/ugc/echo-4.jpg",
     mask: "/ugc/echo-4-mask.png",
   },
   {
-    quote: "The relief is quiet. That’s what makes it real.",
+    quote: "The relief is quiet. That's what makes it real.",
     role: "ICU Nurse",
     time: "12h",
     img: "/ugc/echo-5.jpg",
@@ -49,60 +49,58 @@ const stories = [
   },
 ];
 
+// Unified timing (match design system)
+const DURATION_ATTENTION = 0.6;
+const DELAY_MA = 0.08;
+const EASE_EMERGE: [number, number, number, number] = [0.16, 1, 0.3, 1];
+
 export function SectionEcho() {
   return (
-    <KakemonoSection
-      id="echo"
-      className="py-36"
-      ornaments={
-        <motion.div
-          initial={{ scale: 2, opacity: 0, rotate: 10 }}
-          whileInView={{ scale: 1, opacity: 0.82, rotate: -3 }}
-          transition={{ type: "spring", stiffness: 220, damping: 16 }}
-          viewport={{ once: true, amount: 0.5 }}
-          className="absolute bottom-10 right-10 z-30 mix-blend-multiply hidden md:block"
-        >
-          <div className="border-[3px] border-persimmon text-persimmon px-4 py-3 bg-washi/80">
-            <p className="font-mono text-[10px] font-bold uppercase tracking-widest leading-tight text-center">
-              12 Hours.
-              <br />
-              Held.
-              <br />
-              Or Free.
-            </p>
-          </div>
-        </motion.div>
-      }
-    >
+    <KakemonoSection id="echo" className="py-32 md:py-40">
       <div className="max-w-6xl mx-auto px-6">
-        <div className="mb-16 text-center">
+        {/* Header */}
+        <header className="mb-20 text-center">
           <h2 className="k-title k-title-xl">Relief is ritual.</h2>
-          <p className="k-body mt-6 text-sm max-w-md mx-auto">No stars. Just resonance.</p>
-        </div>
+          <p className="k-body mt-5 text-sm max-w-md mx-auto">No stars. Just resonance.</p>
+        </header>
 
-        <div className="columns-1 md:columns-2 lg:columns-3 gap-8">
+        {/* Testimonial Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
           {stories.map((s, i) => (
             <motion.figure
               key={i}
-              initial={{ opacity: 0, y: 18 }}
+              initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.06 }}
-              viewport={{ once: true }}
-              className="bg-washi border border-stone/10 shadow-sm mb-8 break-inside-avoid overflow-hidden"
+              transition={{
+                duration: DURATION_ATTENTION,
+                delay: i * DELAY_MA,
+                ease: EASE_EMERGE,
+              }}
+              viewport={{ once: true, margin: "-48px" }}
+              className="group bg-washi border border-stone/8 rounded-sm overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.04)]"
             >
+              {/* Image */}
               <div className="relative aspect-[4/5] bg-stone/5">
                 <PersimmonPhoto src={s.img} accentMaskSrc={s.mask} alt={`${s.role} relief moment`} />
               </div>
 
-              <figcaption className="p-7">
-                <p className="k-title k-title-md text-[18px] leading-tight">&ldquo;{s.quote}&rdquo;</p>
-                <div className="mt-4 flex justify-between font-mono text-[9px] uppercase tracking-widest text-stone/60">
+              {/* Content */}
+              <figcaption className="px-6 py-6">
+                {/* Quote */}
+                <blockquote className="font-body text-base leading-snug text-sumi">
+                  &ldquo;{s.quote}&rdquo;
+                </blockquote>
+
+                {/* Metadata row */}
+                <div className="mt-5 flex items-center justify-between font-mono text-[10px] uppercase tracking-widest text-stone/50">
                   <span>{s.role}</span>
-                  <span>{s.time}</span>
+                  <span className="tabular-nums">{s.time}</span>
                 </div>
 
-                <div className="mt-6 h-px bg-stone/10 relative">
-                  <span className="absolute -top-[3px] left-0 w-2 h-2 bg-persimmon rounded-full shadow-[0_0_10px_var(--color-persimmon-50)]" />
+                {/* Accent line with dot */}
+                <div className="mt-5 relative">
+                  <div className="h-px bg-stone/8" />
+                  <span className="absolute top-1/2 left-0 -translate-y-1/2 w-1.5 h-1.5 bg-persimmon rounded-full shadow-[0_0_8px_var(--color-persimmon-25)]" />
                 </div>
               </figcaption>
             </motion.figure>
