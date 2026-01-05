@@ -1,84 +1,65 @@
-# CLAUDE.md
+# hisoles
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+Premium e-commerce scroll experience for engineered insoles. Japanese aesthetic: Kakemono (vertical scroll), Sumi-e (ink), Ma (intentional pauses), Washi (paper).
 
-## Mandatory: Proactive Skill Usage
+## Architecture
 
-**Before responding to ANY user request, you MUST:**
+**Two-URL design**: `/` (scroll experience) + `/checkout` (transaction). Single product, single audience, linear narrative — no additional pages needed.
 
-1. Mentally scan available Superpowers skills
-2. If ANY skill has even 1% relevance → Use the `Skill` tool to read it
-3. Announce: "I'm using [skill name] for this task"
-4. Follow the skill's workflow exactly
+**Scroll chapters**: `void` → `tension` → `decay` → `artifact` → `echo` → `altar`
 
-**This is automated behavior, not optional.** Do not rationalize skipping skills with thoughts like "this is simple" or "I'll just do it quickly."
+| State Type        | Tool            | Location                              |
+| ----------------- | --------------- | ------------------------------------- |
+| UI + persistence  | Zustand         | `src/stores/`                         |
+| Page coordination | Context API     | `src/components/layout/*Provider.tsx` |
+| Form state        | React Hook Form | Component-local                       |
+| Server validation | Zod + Actions   | `src/lib/schemas/`, `actions.ts`      |
 
-Key skills to check:
-- `superpowers:brainstorm` - Before implementing features or making design decisions
-- `superpowers:write-plan` - For multi-step implementation tasks
-- `superpowers:execute-plan` - When executing approved plans
-- `superpowers:code-reviewer` - After writing significant code
+**Provider hierarchy**: `OverlayProvider` → `SpineProvider`. Cart via Zustand (`useCartStore`).
+
+**Key components**: `MeridianSystem` (scroll spine), `ChapterRail` (kanji nav), `KakemonoSection` (section wrapper), `CheckoutDrawer`, `ShojiDrawer`
 
 ## Commands
 
 ```bash
-npm run dev      # Start dev server (Turbopack enabled)
-npm run build    # Production build
-npm run lint     # ESLint
+bun run dev      # Dev server
+bun run build    # Production build
+bun run check    # Lint + format (run before commits)
 ```
 
-## Tech Stack
+## Stack
 
-- Next.js 16 (App Router, React Compiler enabled)
-- React 19
-- TypeScript (strict mode)
-- Tailwind CSS 4 (v4 syntax with `@theme` directive)
-- Motion (framer-motion successor) for animations
-- OKLCH color system
+Next.js 16 (App Router, React Compiler) | Bun | Tailwind CSS 4 | Motion | Zustand | React Hook Form + Zod | Biome | Prettier
 
-## Architecture
+## Design Tokens
 
-Single-page product landing site with scroll-driven animations.
+**Colors**: `washi` #FCFAF5 (bg), `sumi` #1A1A1A (text), `persimmon` #E85D04 (CTA), `stone` #4A4A4A, `charcoal` #222222
 
-### Component Structure
+**Typography**: General Sans (display), Switzer (body), Space Mono (kickers)
 
-```
-src/
-├── app/           # App Router pages, layout, metadata
-├── components/
-│   ├── layout/    # Providers, Header, Footer, UI elements
-│   └── sections/  # Page sections (SectionVoid, SectionTension, etc.)
-├── fonts/         # Local font files (General Sans, Switzer)
-└── lib/           # Utilities
-```
+**Timing**: `--duration-breath` 3600ms, `--duration-attention` 600ms, `--duration-whisper` 400ms, `--delay-ma` 80ms
 
-### State Management
+## Code Conventions
 
-Two React contexts wrap the page:
-- **CartProvider** (`useCart`) - Shopping cart state, drawer open/close
-- **SpineProvider** (`useSpine`) - Coordinates traveling dot animation with logo position
+- No semicolons, double quotes, trailing commas (ES5)
+- `cn()` from `@/lib/utils` for conditional classes
+- `import type` for type-only imports
+- `usePrefersReducedMotion()` for motion respect
+- Spring physics: `damping: 50, stiffness: 400`
 
-### Design System
+## Brand System
 
-Colors defined in `globals.css` using OKLCH with HEX fallbacks:
-- `washi` - warm off-white (#FAF9F6)
-- `sumi` - ink black (#1A1A1A)
-- `persimmon` - orange accent (#E85D04)
-- `stone` / `charcoal` - grays
+The Universal Brand System lives in `docs/` with numbered layers:
 
-Fonts (via CSS variables):
-- `--font-display` (General Sans) - headings
-- `--font-body` (Switzer) - body text
-- `--font-mono` (Space Mono) - monospace
+| Layer | File                    | Purpose            |
+| ----- | ----------------------- | ------------------ |
+| Meta  | `00-orchestration.md`   | System protocol    |
+| 0     | `01-manifesto.md`       | Philosophy & axiom |
+| 1     | `02-covenant.md`        | Strategy & offers  |
+| 2     | `03-sumi-breath.md`     | Visual doctrine    |
+| 3     | `04-tradeoff-ladder.md` | Priority hierarchy |
+| 4     | `05-canon.md`           | Voice & expression |
+| 5     | `06-choreography.md`    | Experience moments |
+| 6     | `07-storefront.md`      | Artifact spec      |
 
-### Animation Pattern
-
-Sections use scroll-linked animations via Motion:
-```tsx
-const { scrollYProgress } = useScroll({ target: ref, offset: [...] });
-const opacity = useTransform(scrollYProgress, [0, 1], [0, 1]);
-```
-
-### Import Alias
-
-Use `@/` for src imports: `import { useCart } from "@/components/layout/CartProvider"`
+`docs/00-orchestration.md` is the entry point for the complete system.

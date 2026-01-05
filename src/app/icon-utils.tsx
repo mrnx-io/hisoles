@@ -1,5 +1,5 @@
-import { ImageResponse } from "next/og";
-import { COLORS } from "@/lib/colors";
+import { ImageResponse } from "next/og"
+import { COLORS } from "@/lib/colors"
 
 /**
  * Brand colors for ImageResponse (next/og)
@@ -10,7 +10,7 @@ import { COLORS } from "@/lib/colors";
  *
  * Colors imported from centralized source: src/lib/colors.ts
  */
-const { washi: WASHI, sumi: SUMI, persimmon: PERSIMMON } = COLORS;
+const { washi: WASHI, sumi: SUMI, persimmon: PERSIMMON } = COLORS
 
 /**
  * Typography-based proportions derived from the homepage logo:
@@ -29,75 +29,70 @@ const PROPORTIONS = {
   stemHeight: 0.48,
   // Gap: space between dot bottom and stem top (~8% of em)
   gap: 0.08,
-} as const;
+} as const
 
 /** Round to nearest even number for pixel-perfect rendering */
 function makeEven(n: number): number {
-  const rounded = Math.round(n);
-  return rounded % 2 === 0 ? rounded : rounded + 1;
+  const rounded = Math.round(n)
+  return rounded % 2 === 0 ? rounded : rounded + 1
 }
 
 /** Render the hisoles "i" icon at the given size */
 export function renderIcon(size: number): ImageResponse {
   // Calculate dimensions based on typographic proportions
-  const dotSize = Math.max(4, makeEven(size * PROPORTIONS.dot));
-  const stemWidth = Math.max(2, makeEven(size * PROPORTIONS.stemWidth));
-  const stemHeight = Math.max(6, makeEven(size * PROPORTIONS.stemHeight));
-  const gap = Math.max(1, Math.round(size * PROPORTIONS.gap));
+  const dotSize = Math.max(4, makeEven(size * PROPORTIONS.dot))
+  const stemWidth = Math.max(2, makeEven(size * PROPORTIONS.stemWidth))
+  const stemHeight = Math.max(6, makeEven(size * PROPORTIONS.stemHeight))
+  const gap = Math.max(1, Math.round(size * PROPORTIONS.gap))
 
   // Subtle glow on larger icons (matches TravelingDot glow aesthetic)
-  const glowSize = Math.round(size * 0.035);
-  const dotGlow =
-    size >= 64
-      ? `0 0 ${Math.max(4, glowSize)}px rgba(232, 93, 4, 0.55)`
-      : "none";
+  const glowSize = Math.round(size * 0.035)
+  const dotGlow = size >= 64 ? `0 0 ${Math.max(4, glowSize)}px rgba(232, 93, 4, 0.55)` : "none"
 
   return new ImageResponse(
-    (
+    <div
+      style={{
+        background: WASHI,
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        borderRadius: "50%",
+      }}
+    >
+      {/* The "i" mark container */}
       <div
         style={{
-          background: WASHI,
-          width: "100%",
-          height: "100%",
           display: "flex",
+          flexDirection: "column",
           alignItems: "center",
-          justifyContent: "center",
-          borderRadius: "50%",
+          gap: `${gap}px`,
         }}
       >
-        {/* The "i" mark container */}
+        {/* Dot (tittle) */}
         <div
           style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            gap: `${gap}px`,
+            width: `${dotSize}px`,
+            height: `${dotSize}px`,
+            borderRadius: "50%",
+            background: PERSIMMON,
+            boxShadow: dotGlow,
           }}
-        >
-          {/* Dot (tittle) */}
-          <div
-            style={{
-              width: `${dotSize}px`,
-              height: `${dotSize}px`,
-              borderRadius: "50%",
-              background: PERSIMMON,
-              boxShadow: dotGlow,
-            }}
-          />
-          {/* Stem */}
-          <div
-            style={{
-              width: `${stemWidth}px`,
-              height: `${stemHeight}px`,
-              background: SUMI,
-            }}
-          />
-        </div>
+        />
+        {/* Stem */}
+        <div
+          style={{
+            width: `${stemWidth}px`,
+            height: `${stemHeight}px`,
+            background: SUMI,
+          }}
+        />
       </div>
-    ),
+    </div>,
     {
       width: size,
       height: size,
     }
-  );
+  )
 }

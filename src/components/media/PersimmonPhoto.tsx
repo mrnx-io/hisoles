@@ -1,15 +1,32 @@
-"use client";
+"use client"
 
-import Image from "next/image";
+import Image from "next/image"
 
 interface PersimmonPhotoProps {
-  src: string;
-  alt: string;
-  accentMaskSrc?: string; // white = show color, black = hide
-  priority?: boolean;
-  className?: string;
+  src: string
+  alt: string
+  accentMaskSrc?: string // white = show color, black = hide
+  priority?: boolean
+  className?: string
 }
 
+/**
+ * Three-layer image component for persimmon-accent photography effect.
+ *
+ * **Design rationale:** This component intentionally uses 3 Image instances
+ * to achieve a precise visual effect that cannot be replicated with CSS alone:
+ *
+ * 1. Base color image - full color version
+ * 2. Grayscale overlay - applies `mix-blend-mode: color` for desaturation
+ * 3. Masked color layer - brings back color only in mask-defined regions
+ *
+ * The combination creates the signature "persimmon accent" look where most
+ * of the image is desaturated but key areas (defined by mask) retain color.
+ *
+ * **Note:** While this creates 3 DOM nodes per photo, Next.js Image optimization
+ * ensures the same src is only fetched once. The visual fidelity is worth the
+ * DOM overhead for the distinctive brand aesthetic.
+ */
 export function PersimmonPhoto({
   src,
   alt,
@@ -18,7 +35,7 @@ export function PersimmonPhoto({
   className,
 }: PersimmonPhotoProps) {
   return (
-    <div className={className ?? "relative w-full h-full"}>
+    <div className={className ?? "relative h-full w-full"}>
       {/* Base image (color) */}
       <Image
         src={src}
@@ -72,6 +89,5 @@ export function PersimmonPhoto({
       {/* Vignette depth */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_35%,rgba(26,26,26,0.38)_100%)]" />
     </div>
-  );
+  )
 }
-

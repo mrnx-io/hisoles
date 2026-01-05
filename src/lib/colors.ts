@@ -31,6 +31,6 @@ export const COLORS = {
 
   /** Dark gray - tertiary elements */
   charcoal: "#222222",
-} as const;
+} as const
 
-export type ColorName = keyof typeof COLORS;
+export type ColorName = keyof typeof COLORS

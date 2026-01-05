@@ -1,127 +1,151 @@
-"use client";
+"use client"
 
-import { useEffect } from "react";
-import { motion, AnimatePresence } from "motion/react";
-import { X, Minus, Plus, Trash2 } from "lucide-react";
-import { useCart } from "@/components/layout/CartProvider";
-import { useRouter } from "next/navigation";
+import { Minus, Plus, Trash2, X } from "lucide-react"
+import { AnimatePresence, motion } from "motion/react"
+import { useRouter } from "next/navigation"
+import { useId, useRef } from "react"
+import { useDialogAccessibility } from "@/lib/useDialogAccessibility"
+import { selectTotalPrice, useCartStore } from "@/stores/cart-store"
 
 export function CheckoutDrawer() {
-  const router = useRouter();
-  const {
-    items,
-    isOpen,
-    closeCart,
-    totalPrice,
-    addItem,
-    removeItem,
-    updateQuantity,
-  } = useCart();
+  const router = useRouter()
+  const items = useCartStore((s) => s.items)
+  const isOpen = useCartStore((s) => s.isOpen)
+  const closeCart = useCartStore((s) => s.closeCart)
+  const removeItem = useCartStore((s) => s.removeItem)
+  const updateQuantity = useCartStore((s) => s.updateQuantity)
+  const totalPrice = useCartStore(selectTotalPrice)
+  const addItem = useCartStore((s) => s.addItem)
 
-  useEffect(() => {
-    if (!isOpen) return;
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") closeCart();
-    };
-    window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
-  }, [isOpen, closeCart]);
+  const closeBtnRef = useRef<HTMLButtonElement>(null)
+  const titleId = useId()
+
+  const { dialogRef } = useDialogAccessibility({
+    isOpen,
+    onClose: closeCart,
+    initialFocusRef: closeBtnRef,
+  })
 
   const handleAddBackup = () => {
-    addItem({ id: "backup-pair", name: "Backup Pair", price: 29 });
-  };
+    addItem({ id: "backup-pair", name: "Backup Pair", price: 29 })
+  }
 
   return (
     <AnimatePresence>
       {isOpen && (
         <>
+          {/* Backdrop */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={closeCart}
-            className="fixed inset-0 bg-sumi/60 backdrop-blur-sm z-[60]"
+            className="bg-sumi/60 fixed inset-0 z-[60] backdrop-blur-sm"
+            aria-hidden="true"
           />
 
-          <motion.div
+          {/* Dialog */}
+          <motion.dialog
+            ref={dialogRef}
+            open
+            aria-modal="true"
+            aria-labelledby={titleId}
             initial={{ y: "100%" }}
             animate={{ y: 0 }}
             exit={{ y: "100%" }}
-            transition={{ type: "spring", damping: 25, stiffness: 200 }}
-            className="fixed bottom-0 left-0 right-0 max-h-[85vh] md:max-h-[70vh] md:left-1/2 md:-translate-x-1/2 md:max-w-lg bg-washi z-[70] shadow-2xl flex flex-col rounded-t-2xl border border-stone/10"
+            transition={{ type: "spring", damping: 25, stiffness: 200 }} // SPRING_DRAWER preset
+            className="bg-washi border-stone/10 fixed right-0 bottom-0 left-0 z-[70] m-0 flex max-h-[85vh] flex-col rounded-t-2xl border shadow-2xl outline-none md:left-1/2 md:max-h-[70vh] md:max-w-lg md:-translate-x-1/2"
+            tabIndex={-1}
           >
-            <div className="p-6 border-b border-stone/10 flex justify-between items-center">
-              <h3 className="font-body font-medium text-xl text-sumi">Your Shift</h3>
-              <button type="button" onClick={closeCart} className="hover:text-persimmon transition-colors" aria-label="Close cart">
+            {/* Header */}
+            <div className="border-stone/10 flex items-center justify-between border-b p-6">
+              <h2 id={titleId} className="font-body text-sumi text-xl font-medium">
+                Your Shift
+              </h2>
+              <button
+                ref={closeBtnRef}
+                type="button"
+                onClick={closeCart}
+                className="hover:text-persimmon transition-colors"
+                aria-label="Close cart"
+              >
                 <X size={20} />
               </button>
             </div>
 
-            <div className="flex-1 p-6 overflow-y-auto">
+            {/* Content */}
+            <div className="flex-1 overflow-y-auto p-6">
               {items.length === 0 ? (
-                <div className="text-center py-12">
+                <div className="py-12 text-center">
                   <p className="font-body text-stone">Your cart is empty</p>
-                  <p className="font-mono text-xs text-stone/60 mt-2">Add some relief to get started</p>
+                  <p className="text-stone/60 mt-2 font-mono text-xs">
+                    Add some relief to get started
+                  </p>
                 </div>
               ) : (
                 <>
                   {items.map((item) => (
-                    <div key={item.id} className="mb-6 pb-6 border-b border-stone/10">
-                      <div className="flex justify-between items-start gap-6">
+                    <div key={item.id} className="border-stone/10 mb-6 border-b pb-6">
+                      <div className="flex items-start justify-between gap-6">
                         <div>
-                          <p className="font-body font-medium text-lg">{item.name}</p>
-                          <p className="font-mono text-xs text-stone mt-1">Size: M (8–10.5)</p>
+                          <p className="font-body text-lg font-medium">{item.name}</p>
+                          <p className="text-stone mt-1 font-mono text-xs">Size: M (8–10.5)</p>
                         </div>
                         <p className="font-mono text-lg">${item.price * item.quantity}</p>
                       </div>
 
                       <div className="mt-4 flex items-center justify-between">
-                        <div className="flex items-center gap-2">
+                        <fieldset className="flex items-center gap-2 border-none p-0">
+                          <legend className="sr-only">Quantity controls for {item.name}</legend>
                           <button
                             type="button"
                             onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                            className="w-9 h-9 border border-stone/15 grid place-items-center hover:border-stone/30 transition-colors"
-                            aria-label="Decrease quantity"
+                            className="border-stone/15 hover:border-stone/30 grid h-9 w-9 place-items-center border transition-colors"
+                            aria-label={`Decrease quantity of ${item.name}`}
                           >
                             <Minus size={16} />
                           </button>
-                          <span className="font-mono text-sm w-8 text-center">{item.quantity}</span>
+                          <span className="w-8 text-center font-mono text-sm" aria-live="polite">
+                            {item.quantity}
+                          </span>
                           <button
                             type="button"
                             onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                            className="w-9 h-9 border border-stone/15 grid place-items-center hover:border-stone/30 transition-colors"
-                            aria-label="Increase quantity"
+                            className="border-stone/15 hover:border-stone/30 grid h-9 w-9 place-items-center border transition-colors"
+                            aria-label={`Increase quantity of ${item.name}`}
                           >
                             <Plus size={16} />
                           </button>
-                        </div>
+                        </fieldset>
 
                         <button
                           type="button"
                           onClick={() => removeItem(item.id)}
-                          className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-wide-cta text-stone/60 hover:text-persimmon transition-colors"
+                          className="tracking-wide-cta text-stone/60 hover:text-persimmon flex items-center gap-2 font-mono text-[10px] uppercase transition-colors"
+                          aria-label={`Remove ${item.name} from cart`}
                         >
-                          <Trash2 size={14} />
+                          <Trash2 size={14} aria-hidden="true" />
                           Remove
                         </button>
                       </div>
                     </div>
                   ))}
 
-                  <div className="bg-stone/5 p-5 rounded border border-stone/10">
-                    <div className="flex justify-between items-start gap-4">
+                  {/* Upsell */}
+                  <div className="bg-stone/5 border-stone/10 rounded border p-5">
+                    <div className="flex items-start justify-between gap-4">
                       <div>
-                        <p className="font-body font-medium text-sm text-sumi mb-1">
+                        <p className="font-body text-sumi mb-1 text-sm font-medium">
                           Add a backup pair?
                         </p>
-                        <p className="font-body text-xs text-stone leading-tight">
+                        <p className="font-body text-stone text-xs leading-tight">
                           Swap between shoes. Keep the ritual consistent.
                         </p>
                       </div>
                       <button
                         type="button"
                         onClick={handleAddBackup}
-                        className="whitespace-nowrap bg-washi border border-persimmon text-persimmon text-[10px] font-bold px-3 py-2 uppercase hover:bg-persimmon hover:text-washi transition-colors shadow-sm"
+                        className="bg-washi border-persimmon text-persimmon hover:bg-persimmon hover:text-washi border px-3 py-2 text-[10px] font-bold whitespace-nowrap uppercase shadow-sm transition-colors"
                       >
                         + Add $29
                       </button>
@@ -131,29 +155,32 @@ export function CheckoutDrawer() {
               )}
             </div>
 
-            <div className="p-6 border-t border-stone/10">
-              <div className="flex justify-between items-center mb-4">
-                <span className="font-mono text-sm text-stone">Subtotal</span>
-                <span className="font-mono text-xl text-sumi">${totalPrice}</span>
+            {/* Footer */}
+            <div className="border-stone/10 border-t p-6">
+              <div className="mb-4 flex items-center justify-between">
+                <span className="text-stone font-mono text-sm">Subtotal</span>
+                <span className="text-sumi font-mono text-xl" aria-live="polite">
+                  ${totalPrice}
+                </span>
               </div>
 
-              <div className="mb-4 flex justify-between font-mono text-[10px] uppercase tracking-widest text-stone/60">
+              <div className="text-stone/60 mb-4 flex justify-between font-mono text-[10px] tracking-widest uppercase">
                 <span>90-day guarantee</span>
                 <span>Free returns</span>
               </div>
 
               <button
                 type="button"
-                className="w-full h-14 bg-sumi text-washi font-body uppercase tracking-widest hover:bg-persimmon transition-colors shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                className="bg-sumi text-washi font-body hover:bg-persimmon h-14 w-full tracking-widest uppercase shadow-lg transition-colors disabled:cursor-not-allowed disabled:opacity-50"
                 disabled={items.length === 0}
                 onClick={() => router.push("/checkout")}
               >
                 Proceed to Checkout
               </button>
             </div>
-          </motion.div>
+          </motion.dialog>
         </>
       )}
     </AnimatePresence>
-  );
+  )
 }

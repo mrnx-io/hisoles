@@ -1,34 +1,28 @@
-"use client";
+"use client"
 
-import { motion } from "motion/react";
-import { useSpine } from "@/components/layout/SpineProvider";
-import { cn } from "@/lib/utils";
-import { CHAPTERS } from "@/components/layout/chapters";
-import { usePrefersReducedMotion } from "@/lib/usePrefersReducedMotion";
-
+import { motion } from "motion/react"
+import { CHAPTERS } from "@/components/layout/chapters"
+import { useSpine } from "@/components/layout/SpineProvider"
+import { useScrollToSection } from "@/lib/animation"
+import { cn } from "@/lib/utils"
 
 export function ChapterRail() {
-  const reducedMotion = usePrefersReducedMotion();
-  const { activeChapter } = useSpine();
-
-  const scrollTo = (id: string) => {
-    const el = document.getElementById(id);
-    el?.scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth", block: "start" });
-  };
+  const { activeChapter } = useSpine()
+  const scrollTo = useScrollToSection()
 
   // Extract readable chapter name for aria-label (e.g., "00 THE VOID" -> "The Void")
   const getChapterName = (label: string) => {
-    const name = label.replace(/^\d+\s+/, ""); // Remove leading number
-    return name.charAt(0) + name.slice(1).toLowerCase(); // Title case
-  };
+    const name = label.replace(/^\d+\s+/, "") // Remove leading number
+    return name.charAt(0) + name.slice(1).toLowerCase() // Title case
+  }
 
   return (
     <nav
       aria-label="Page chapters"
-      className="fixed right-6 md:right-12 top-1/2 -translate-y-1/2 z-[55] hidden md:flex flex-col gap-8"
+      className="fixed top-1/2 right-6 z-[55] hidden -translate-y-1/2 flex-col gap-8 md:right-12 md:flex"
     >
       {CHAPTERS.map((chapter) => {
-        const isActive = activeChapter === chapter.id;
+        const isActive = activeChapter === chapter.id
 
         return (
           <button
@@ -37,7 +31,7 @@ export function ChapterRail() {
             onClick={() => scrollTo(chapter.id)}
             aria-current={isActive ? "location" : undefined}
             aria-label={`Navigate to ${getChapterName(chapter.label)}`}
-            className="relative flex items-center justify-end group h-6 bg-transparent border-0 p-0 text-left"
+            className="group relative flex h-6 items-center justify-end border-0 bg-transparent p-0 text-left"
           >
             {/* Label - slides in with blur on active */}
             <motion.span
@@ -48,7 +42,7 @@ export function ChapterRail() {
                 filter: isActive ? "blur(0px)" : "blur(4px)",
               }}
               transition={{ duration: 0.5, ease: "circOut" }}
-              className="absolute right-0 whitespace-nowrap font-mono text-[9px] tracking-widest text-persimmon uppercase origin-right"
+              className="text-persimmon absolute right-0 origin-right font-mono text-[9px] tracking-widest whitespace-nowrap uppercase"
             >
               {chapter.label}
             </motion.span>
@@ -56,10 +50,10 @@ export function ChapterRail() {
             {/* Kanji */}
             <div
               className={cn(
-                "font-display text-xl leading-none transition-all duration-700 select-none absolute right-0 w-6 text-center",
+                "font-display absolute right-0 w-6 text-center text-xl leading-none transition-all duration-700 select-none",
                 isActive
-                  ? "text-sumi scale-110 blur-0"
-                  : "text-stone/20 scale-90 blur-[0.5px] group-hover:text-stone/40"
+                  ? "text-sumi blur-0 scale-110"
+                  : "text-stone/20 group-hover:text-stone/40 scale-90 blur-[0.5px]"
               )}
             >
               {chapter.kanji}
@@ -68,18 +62,18 @@ export function ChapterRail() {
             {/* Indicator dot */}
             <div
               className={cn(
-                "absolute -right-3 w-1 h-1 rounded-full transition-all duration-500",
+                "absolute -right-3 h-1 w-1 rounded-full transition-all duration-500",
                 isActive
                   ? "bg-persimmon shadow-[0_0_8px_var(--color-persimmon)]"
-                  : "bg-transparent group-hover:bg-stone/30"
+                  : "group-hover:bg-stone/30 bg-transparent"
               )}
             />
           </button>
-        );
+        )
       })}
 
       {/* Vertical spine line */}
-      <div className="absolute top-0 bottom-0 right-[11px] w-px bg-stone/5 -z-10" />
+      <div className="bg-stone/5 absolute top-0 right-[11px] bottom-0 -z-10 w-px" />
     </nav>
-  );
+  )
 }

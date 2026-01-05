@@ -1,5 +1,5 @@
-import type { MetadataRoute } from "next";
-import { COLORS } from "@/lib/colors";
+import type { MetadataRoute } from "next"
+import { COLORS } from "@/lib/colors"
 
 /**
  * Web App Manifest for PWA support
@@ -40,5 +40,5 @@ export default function manifest(): MetadataRoute.Manifest {
         type: "image/png",
       },
     ],
-  };
+  }
 }

@@ -14,19 +14,19 @@
      --------------------------------------------------------------------------- */
 
   /* Washi - warm cream paper background */
-  --color-washi: #FCFAF5;
+  --color-washi: #fcfaf5;
   --color-washi: oklch(98.5% 0.006 95);
 
   /* Sumi - ink black for text */
-  --color-sumi: #1A1A1A;
+  --color-sumi: #1a1a1a;
   --color-sumi: oklch(18.4% 0 0);
 
   /* Persimmon - orange accent for CTAs and highlights */
-  --color-persimmon: #E85D04;
+  --color-persimmon: #e85d04;
   --color-persimmon: oklch(62.8% 0.19 48);
 
   /* Stone - medium gray for secondary text */
-  --color-stone: #4A4A4A;
+  --color-stone: #4a4a4a;
   --color-stone: oklch(36.5% 0 0);
 
   /* Charcoal - dark gray for tertiary elements */
@@ -59,15 +59,15 @@
      --------------------------------------------------------------------------- */
 
   /* Duration tokens */
-  --duration-breath: 3600ms;      /* Ambient, meditative animations */
-  --duration-attention: 600ms;    /* User-triggered state changes */
-  --duration-whisper: 400ms;      /* Micro-interactions */
-  --delay-ma: 80ms;               /* Intentional anticipation pause */
+  --duration-breath: 3600ms; /* Ambient, meditative animations */
+  --duration-attention: 600ms; /* User-triggered state changes */
+  --duration-whisper: 400ms; /* Micro-interactions */
+  --delay-ma: 80ms; /* Intentional anticipation pause */
 
   /* Easing curves */
-  --ease-emerge: cubic-bezier(0.16, 1, 0.3, 1);   /* Smooth attack, circOut-like */
-  --ease-retreat: cubic-bezier(0.7, 0, 0.84, 0);  /* Graceful exit */
-  --ease-breath: cubic-bezier(0.37, 0, 0.63, 1);  /* Sine-wave breathing */
+  --ease-emerge: cubic-bezier(0.16, 1, 0.3, 1); /* Smooth attack, circOut-like */
+  --ease-retreat: cubic-bezier(0.7, 0, 0.84, 0); /* Graceful exit */
+  --ease-breath: cubic-bezier(0.37, 0, 0.63, 1); /* Sine-wave breathing */
 }
 
 /* =============================================================================
@@ -107,8 +107,7 @@ html {
 
 /* Focus (premium trust) */
 :focus-visible {
-  outline: 2px solid
-    color-mix(in oklab, var(--color-persimmon) 75%, transparent);
+  outline: 2px solid color-mix(in oklab, var(--color-persimmon) 75%, transparent);
   outline-offset: 3px;
 }
 
