@@ -2,16 +2,26 @@ import { OfferSection } from "@/components/offer/OfferSection"
 
 export function OfferGuarantee() {
   return (
-    <OfferSection innerClassName="py-20 md:py-24">
+    <OfferSection softBorder innerClassName="py-14 md:py-24">
       <div className="mx-auto max-w-3xl text-center">
-        <p className="k-kicker">The 90-Day Shift Test</p>
-        <h2 className="k-title k-title-md mt-5">
-          Wear them on real shifts for 90 days. Decide with your feet.
-        </h2>
+        <p className="k-kicker text-persimmon">Zero-risk guarantee</p>
+        <h2 className="k-title k-title-xl mt-5">Love them or get 100% of your money back.</h2>
         <p className="k-body mt-6 text-sm md:text-base">
-          If they don&apos;t earn their place in your shoes, send them back. Returns are free — and
-          you&apos;ll be taken care of by a human, not a chatbot.
+          <strong className="text-sumi">We&apos;re not asking you to believe us.</strong> We&apos;re
+          asking you to test them on real shifts for up to 90 days. If they don&apos;t help, you get
+          a full refund. We even pay for return shipping.
         </p>
+
+        {/* The no-brainer callout */}
+        <div className="border-persimmon/30 bg-persimmon/5 mx-auto mt-8 max-w-xl border p-6">
+          <p className="font-body text-sumi text-lg font-medium">
+            The only way you lose is if you don&apos;t try.
+          </p>
+          <p className="font-body text-stone mt-2 text-sm">
+            Worst case: You test them, they&apos;re not for you, you get your money back. Best case:
+            You finally stop paying the &ldquo;foot tax&rdquo; every shift.
+          </p>
+        </div>
 
         <div className="border-stone/10 bg-washi mt-12 border p-8 text-left">
           <div className="grid gap-8 md:grid-cols-3">

@@ -48,7 +48,7 @@ export function SizeChart({ className }: SizeChartProps) {
             <button
               type="button"
               onClick={() => setIsOpen(false)}
-              className="text-stone/50 hover:text-sumi p-1 transition-colors"
+              className="text-stone/50 hover:text-sumi -mr-2 flex h-11 w-11 items-center justify-center transition-colors"
               aria-label="Close size guide"
             >
               <svg

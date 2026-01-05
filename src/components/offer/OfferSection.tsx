@@ -6,11 +6,26 @@ interface OfferSectionProps {
   children: ReactNode
   className?: string
   innerClassName?: string
+  /** Softer border for better mobile scroll flow */
+  softBorder?: boolean
 }
 
-export function OfferSection({ id, children, className, innerClassName }: OfferSectionProps) {
+export function OfferSection({
+  id,
+  children,
+  className,
+  innerClassName,
+  softBorder = false,
+}: OfferSectionProps) {
   return (
-    <section id={id} className={cn("border-stone/5 relative w-full border-t", className)}>
+    <section
+      id={id}
+      className={cn(
+        "relative w-full border-t",
+        softBorder ? "border-stone/[0.03]" : "border-stone/5",
+        className
+      )}
+    >
       <div
         className="bg-stone/5 pointer-events-none absolute inset-y-0 left-1/2 -z-10 w-px -translate-x-1/2"
         aria-hidden="true"

@@ -23,29 +23,33 @@ export function OfferFooter() {
               <MapPin className="h-3 w-3" />
               Austin, TX
             </span>
-            <span className="flex items-center gap-1.5">
+            <a
+              href="mailto:support@hisoles.com"
+              className="hover:text-persimmon flex min-h-11 items-center gap-1.5 transition-colors"
+            >
               <Mail className="h-3 w-3" />
-              <a
-                href="mailto:support@hisoles.com"
-                className="hover:text-persimmon transition-colors"
-              >
-                support@hisoles.com
-              </a>
-            </span>
+              support@hisoles.com
+            </a>
           </div>
         </div>
 
-        <nav className="flex items-center gap-8 font-mono text-xs tracking-widest uppercase">
-          <a href="/" className="hover:text-persimmon transition-colors">
+        <nav className="flex items-center gap-2 font-mono text-xs tracking-widest uppercase">
+          <a
+            href="/"
+            className="hover:text-persimmon flex min-h-11 items-center px-3 transition-colors"
+          >
             Experience
           </a>
-          <a href="#buy" className="hover:text-persimmon transition-colors">
+          <a
+            href="#buy"
+            className="hover:text-persimmon flex min-h-11 items-center px-3 transition-colors"
+          >
             Pricing
           </a>
           <a
             data-checkout-link
             href="/checkout?add=rotation"
-            className="hover:text-persimmon transition-colors"
+            className="hover:text-persimmon flex min-h-11 items-center px-3 transition-colors"
           >
             Checkout
           </a>

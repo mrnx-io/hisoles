@@ -1,7 +1,26 @@
-import { BadgeCheck } from "lucide-react"
+import { BadgeCheck, Star } from "lucide-react"
 import Image from "next/image"
+import { IMAGE_BLUR } from "@/components/offer/image-blur"
 import { OfferSection } from "@/components/offer/OfferSection"
 import { ReviewStats } from "@/components/offer/ReviewStats"
+
+const STAR_POSITIONS = [0, 1, 2, 3, 4] as const
+
+// Inline star rating component for testimonials
+function StarRating({ size = "sm" }: { size?: "sm" | "xs" }) {
+  const sizeClass = size === "sm" ? "h-3.5 w-3.5" : "h-3 w-3"
+  return (
+    <div className="flex items-center gap-0.5" role="img" aria-label="5 out of 5 stars">
+      {STAR_POSITIONS.map((pos) => (
+        <Star
+          key={`testimonial-star-${pos}`}
+          className={`fill-persimmon text-persimmon ${sizeClass}`}
+          aria-hidden="true"
+        />
+      ))}
+    </div>
+  )
+}
 
 // Photo-backed testimonials (anchor stories)
 const PHOTO_STORIES = [
@@ -14,6 +33,7 @@ const PHOTO_STORIES = [
     shift: "10h shifts",
     usage: "2 weeks in",
     img: "/product/proof-1.webp",
+    blur: IMAGE_BLUR.proof1,
     alt: "Nurse holding Hisoles insoles after hospital shift",
     caption: "The shift ends. You still have enough in your feet to live.",
   },
@@ -26,10 +46,11 @@ const PHOTO_STORIES = [
     shift: "12h shifts",
     usage: "7 shifts in",
     img: "/product/proof-2.webp",
+    blur: IMAGE_BLUR.proof2,
     alt: "Construction worker with Hisoles on job site",
     caption: "Hard floors don't soften. Your support shouldn't either.",
   },
-] as const
+]
 
 // Text-only shift logs (volume + specificity)
 const SHIFT_LOGS = [
@@ -41,6 +62,8 @@ const SHIFT_LOGS = [
     location: "Columbus, OH",
     shift: "9h shifts",
     usage: "10 shifts in",
+    avatar: "/product/proof-1.webp",
+    blur: IMAGE_BLUR.proof1,
   },
   {
     quote:
@@ -50,6 +73,8 @@ const SHIFT_LOGS = [
     location: "Newark, NJ",
     shift: "10h shifts",
     usage: "2 weeks in",
+    avatar: "/product/proof-2.webp",
+    blur: IMAGE_BLUR.proof2,
   },
   {
     quote:
@@ -59,6 +84,8 @@ const SHIFT_LOGS = [
     location: "Austin, TX",
     shift: "11h shifts",
     usage: "2 weeks in",
+    avatar: "/product/proof-3.png",
+    blur: IMAGE_BLUR.proof3,
   },
   {
     quote:
@@ -68,6 +95,8 @@ const SHIFT_LOGS = [
     location: "Chicago, IL",
     shift: "10h shifts",
     usage: "3 weeks in",
+    avatar: "/product/proof-4.png",
+    blur: IMAGE_BLUR.proof4,
   },
   {
     quote:
@@ -77,6 +106,8 @@ const SHIFT_LOGS = [
     location: "Seattle, WA",
     shift: "9h shifts",
     usage: "1 month in",
+    avatar: "/product/proof-1.webp",
+    blur: IMAGE_BLUR.proof1,
   },
   {
     quote:
@@ -86,6 +117,8 @@ const SHIFT_LOGS = [
     location: "Tampa, FL",
     shift: "12h shifts",
     usage: "4 shifts in",
+    avatar: "/product/proof-2.webp",
+    blur: IMAGE_BLUR.proof2,
   },
   {
     quote:
@@ -95,12 +128,14 @@ const SHIFT_LOGS = [
     location: "San Jose, CA",
     shift: "9h shifts",
     usage: "2 weeks in",
+    avatar: "/product/proof-3.png",
+    blur: IMAGE_BLUR.proof3,
   },
 ] as const
 
 export function OfferProof() {
   return (
-    <OfferSection innerClassName="py-20 md:py-24">
+    <OfferSection softBorder innerClassName="py-14 md:py-24">
       <header className="text-center">
         <p className="k-kicker">Shift notes</p>
         <h2 className="k-title k-title-md mt-5">What changes by hour 10.</h2>
@@ -122,29 +157,33 @@ export function OfferProof() {
                 src={s.img}
                 alt={s.alt}
                 fill
-                sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 92vw"
+                loading="lazy"
+                sizes="(min-width: 768px) 50vw, 92vw"
                 className="object-cover"
+                placeholder="blur"
+                blurDataURL={s.blur}
               />
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_35%,rgba(26,26,26,0.38)_100%)]" />
             </div>
 
             <figcaption className="px-6 py-6">
+              {/* Star rating + verified badge row - most scannable element */}
               <div className="flex items-center justify-between">
-                <p className="k-whisper">{s.caption}</p>
-                <span className="text-persimmon/70 flex items-center gap-1 font-mono text-[9px] tracking-widest uppercase">
-                  <BadgeCheck className="h-3 w-3" />
+                <StarRating size="sm" />
+                <span className="bg-persimmon/10 text-persimmon flex items-center gap-1.5 rounded-full px-2.5 py-1 font-mono text-[10px] tracking-wider uppercase">
+                  <BadgeCheck className="h-3.5 w-3.5" />
                   Verified
                 </span>
               </div>
               <blockquote className="font-body text-sumi mt-4 text-base leading-snug">
                 &ldquo;{s.quote}&rdquo;
               </blockquote>
-              <div className="mt-5 space-y-1">
-                <div className="text-stone/70 font-mono text-[10px] tracking-widest uppercase">
-                  {s.name} · {s.role} · {s.location}
+              <div className="mt-5 space-y-1.5">
+                <div className="text-sumi font-mono text-[11px] font-medium tracking-wider uppercase">
+                  {s.name} · {s.role}
                 </div>
-                <div className="text-stone/50 font-mono text-[10px] tracking-widest uppercase">
-                  {s.shift} · {s.usage}
+                <div className="text-stone/60 font-mono text-[10px] tracking-widest uppercase">
+                  {s.location} · {s.shift} · {s.usage}
                 </div>
               </div>
             </figcaption>
@@ -152,29 +191,51 @@ export function OfferProof() {
         ))}
       </div>
 
-      {/* Text-only shift logs for volume */}
+      {/* Text-only shift logs for volume - show 4 on mobile, all on desktop */}
       <div className="mx-auto mt-10 max-w-3xl">
         <p className="k-whisper mb-6 text-center">More from the field</p>
         <div className="grid gap-4 md:grid-cols-2">
-          {SHIFT_LOGS.map((s) => (
+          {SHIFT_LOGS.map((s, index) => (
             <div
               key={s.name}
-              className="border-stone/10 bg-washi border p-5 shadow-[0_1px_2px_rgba(0,0,0,0.03)]"
+              className={`border-stone/10 bg-washi border p-5 shadow-[0_1px_2px_rgba(0,0,0,0.03)] ${index >= 4 ? "hidden md:block" : ""}`}
             >
+              {/* Header: Avatar + name/role + star rating */}
+              <div className="mb-3 flex items-center gap-3">
+                {/* Avatar image */}
+                <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full">
+                  <Image
+                    src={s.avatar}
+                    alt={s.name}
+                    fill
+                    sizes="40px"
+                    className="object-cover"
+                    placeholder="blur"
+                    blurDataURL={s.blur}
+                  />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-2">
+                    <span className="text-sumi truncate font-mono text-[11px] font-medium tracking-wider uppercase">
+                      {s.name}
+                    </span>
+                    <StarRating size="xs" />
+                  </div>
+                  <div className="text-stone/60 truncate font-mono text-[10px] tracking-widest uppercase">
+                    {s.role} · {s.shift}
+                  </div>
+                </div>
+              </div>
               <blockquote className="font-body text-sumi text-sm leading-relaxed">
                 &ldquo;{s.quote}&rdquo;
               </blockquote>
-              <div className="mt-4 flex items-start justify-between gap-2">
-                <div className="space-y-0.5">
-                  <div className="text-stone/70 font-mono text-[10px] tracking-widest uppercase">
-                    {s.name} · {s.role} · {s.location}
-                  </div>
-                  <div className="text-stone/50 font-mono text-[10px] tracking-widest uppercase">
-                    {s.shift} · {s.usage}
-                  </div>
-                </div>
-                <span className="text-persimmon/60 flex shrink-0 items-center gap-1 font-mono text-[9px] tracking-widest uppercase">
+              <div className="mt-3 flex items-center justify-between">
+                <span className="text-stone/50 font-mono text-[10px] tracking-widest uppercase">
+                  {s.location} · {s.usage}
+                </span>
+                <span className="bg-persimmon/10 text-persimmon flex shrink-0 items-center gap-1 rounded-full px-2 py-0.5 font-mono text-[9px] tracking-wider uppercase">
                   <BadgeCheck className="h-3 w-3" />
+                  Verified
                 </span>
               </div>
             </div>

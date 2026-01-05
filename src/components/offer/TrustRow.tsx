@@ -28,21 +28,33 @@ export function TrustRow({
 
   return (
     <div className={cn("flex flex-col items-center gap-3", className)}>
-      <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
+      <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
         {showRating && (
-          <span className="k-whisper flex items-center gap-1.5">
-            <Star className="fill-persimmon text-persimmon h-3.5 w-3.5" />
-            4.8/5 (247 reviews)
+          <span className="flex items-center gap-1.5">
+            {/* Inline star cluster for visual impact */}
+            <span className="flex items-center gap-0.5">
+              {[0, 1, 2, 3, 4].map((i) => (
+                <Star
+                  key={`trust-star-${i}`}
+                  className="fill-persimmon text-persimmon h-3.5 w-3.5"
+                  aria-hidden="true"
+                />
+              ))}
+            </span>
+            <span className="text-sumi font-mono text-[11px] font-medium tracking-wider uppercase">
+              4.8/5 (247)
+            </span>
           </span>
         )}
         {showSecure && (
           <span className="k-whisper flex items-center gap-1.5">
-            <Lock className="text-stone/60 h-3 w-3" />
+            <Lock className="text-stone/60 h-3.5 w-3.5" />
             SSL Encrypted
           </span>
         )}
-        <span className="k-whisper flex items-center gap-1.5">
-          <ShieldCheck className="text-stone/60 h-3.5 w-3.5" />
+        {/* Highlight the guarantee - primary trust signal */}
+        <span className="text-sumi flex items-center gap-1.5 font-mono text-[11px] tracking-wider uppercase">
+          <ShieldCheck className="text-persimmon h-4 w-4" />
           90-day money-back
         </span>
         <span className="k-whisper flex items-center gap-1.5">

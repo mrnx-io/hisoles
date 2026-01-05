@@ -8,7 +8,7 @@ import { useCartStore } from "@/stores/cart-store"
 
 const PRICING = {
   onePair: { id: "trial", label: "1 Pair", price: 39, note: "Trial" },
-  twoPairs: { id: "rotation", label: "2 Pairs", price: 69, note: "Rotation" },
+  twoPairs: { id: "rotation", label: "3 Pairs", price: 69, note: "Rotation" },
 } as const
 
 export function SectionAltar() {

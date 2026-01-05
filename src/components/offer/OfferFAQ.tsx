@@ -13,7 +13,7 @@ const FAQ = [
   },
   // OBJECTION: "Is it worth the money?"
   {
-    q: "Is $39 (or $69 for 2 pairs) actually worth it?",
+    q: "Is $39 (or $69 for 3 pairs) actually worth it?",
     a: "If it lasts you 6 months of shifts, that's less than $0.25 per workday. Compare that to a daily coffee. And if it doesn't work out — you get a full refund. There's no risk to find out if it helps.",
   },
   // OBJECTION: "What if it doesn't work for me?"
@@ -56,7 +56,7 @@ const FAQ = [
 
 export function OfferFAQ() {
   return (
-    <OfferSection innerClassName="py-20 md:py-24">
+    <OfferSection softBorder innerClassName="py-14 md:py-24">
       <div className="mx-auto max-w-3xl">
         <header className="text-center">
           <p className="k-kicker">FAQ</p>

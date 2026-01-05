@@ -3,7 +3,7 @@ import { OfferSection } from "@/components/offer/OfferSection"
 
 export function OfferMechanism() {
   return (
-    <OfferSection id="why" innerClassName="py-20 md:py-24">
+    <OfferSection id="why" softBorder innerClassName="py-14 md:py-24">
       {/* Header: Problem → Solution frame */}
       <header className="mx-auto max-w-2xl text-center">
         <p className="k-kicker">Why most insoles fail</p>

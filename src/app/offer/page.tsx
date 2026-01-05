@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
+import dynamic from "next/dynamic"
 import Script from "next/script"
-import { OfferBundles } from "@/components/offer/OfferBundles"
 import { OfferFAQ } from "@/components/offer/OfferFAQ"
 import { OfferFinalCTA } from "@/components/offer/OfferFinalCTA"
 import { OfferFooter } from "@/components/offer/OfferFooter"
@@ -10,6 +10,11 @@ import { OfferHero } from "@/components/offer/OfferHero"
 import { OfferMechanism } from "@/components/offer/OfferMechanism"
 import { OfferProof } from "@/components/offer/OfferProof"
 import { OfferStickyCTA } from "@/components/offer/OfferStickyCTA"
+
+// Lazy load below-fold heavy component (bundles with images)
+const OfferBundles = dynamic(() =>
+  import("@/components/offer/OfferBundles").then((mod) => mod.OfferBundles)
+)
 
 export const metadata: Metadata = {
   title: "hisoles | engineered calm for long days",
@@ -26,6 +31,10 @@ export const metadata: Metadata = {
 export default function OfferPage() {
   return (
     <div className="relative min-h-[100svh] w-full">
+      {/* Preconnect to Whop for faster checkout navigation */}
+      <link rel="preconnect" href="https://whop.com" />
+      <link rel="dns-prefetch" href="https://whop.com" />
+
       <OfferHeader />
 
       <main>
@@ -42,7 +51,8 @@ export default function OfferPage() {
 
       <OfferStickyCTA />
 
-      <Script id="hisoles-offer-preserve-query" strategy="beforeInteractive">
+      {/* Query preservation - moved to afterInteractive to not block render */}
+      <Script id="hisoles-offer-preserve-query" strategy="afterInteractive">
         {
           "(()=>{var s=location.search;if(!s)return;var p=new URLSearchParams(s);p.delete('add');var q=p.toString();if(!q)return;document.querySelectorAll('a[data-checkout-link]').forEach(function(a){var h=a.getAttribute('href');if(!h)return;a.setAttribute('href',h+(h.indexOf('?')>-1?'&':'?')+q)})})()"
         }
@@ -78,7 +88,7 @@ export default function OfferPage() {
               var plan = href.includes('trial') ? 'trial' : 'rotation';
               var value = plan === 'trial' ? 39 : 69;
               fbq('track', 'InitiateCheckout', {
-                content_name: plan === 'trial' ? '1 Pair' : '2 Pairs',
+                content_name: plan === 'trial' ? '1 Pair' : '3 Pairs',
                 content_category: 'Insoles',
                 value: value,
                 currency: 'USD'
