@@ -27,9 +27,9 @@ export function OfferHeader() {
           <a
             data-checkout-link
             href="/checkout?add=rotation"
-            className="bg-sumi text-washi font-body hover:bg-persimmon inline-flex h-10 items-center justify-center px-5 text-xs tracking-widest uppercase transition-colors"
+            className="bg-sumi text-washi font-body hover:bg-persimmon inline-flex h-12 items-center justify-center px-5 text-xs tracking-widest uppercase transition-colors"
           >
-            Get Relief
+            Get 2 Pairs — $69
           </a>
         </div>
       </div>

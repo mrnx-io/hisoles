@@ -6,6 +6,7 @@ import Link from "next/link"
 import { useRouter, useSearchParams } from "next/navigation"
 import { Suspense, useEffect, useRef, useState, useTransition } from "react"
 import { useForm } from "react-hook-form"
+import { CheckoutTrust } from "@/components/checkout/CheckoutTrust"
 import type { CheckoutFormData } from "@/lib/schemas/checkout"
 import { checkoutSchema } from "@/lib/schemas/checkout"
 import { selectTotalPrice, useCartStore } from "@/stores/cart-store"
@@ -244,10 +245,12 @@ function CheckoutPageInner() {
             {errors.email && <p className="text-persimmon mt-2 text-xs">{errors.email.message}</p>}
           </div>
 
+          <CheckoutTrust className="mt-2" />
+
           <button
             type="submit"
             disabled={isPending}
-            className="bg-sumi text-washi font-body hover:bg-persimmon flex h-14 w-full items-center justify-center gap-2 tracking-widest uppercase shadow-lg transition-colors disabled:cursor-not-allowed disabled:opacity-50"
+            className="bg-sumi text-washi font-body hover:bg-persimmon mt-6 flex h-14 w-full items-center justify-center gap-2 tracking-widest uppercase shadow-lg transition-colors disabled:cursor-not-allowed disabled:opacity-50"
           >
             {isPending ? (
               <>
@@ -260,7 +263,9 @@ function CheckoutPageInner() {
           </button>
         </form>
 
-        <p className="k-whisper mt-10 text-center">Relief is ritual.</p>
+        <p className="k-whisper mt-10 text-center">
+          90-Day Shift Test · Try it on real shifts — return if it&apos;s not for you.
+        </p>
       </div>
     </main>
   )

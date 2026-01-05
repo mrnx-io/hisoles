@@ -224,13 +224,20 @@ html[data-meridian-idle="false"] .meridian-heartbeat {
     color: color-mix(in oklab, var(--color-stone) 92%, transparent);
   }
 
-  /* "Whisper text" (Space Mono ritual copy) */
+  /* "Whisper text" (Space Mono ritual copy) - 11px on mobile for readability */
   .k-whisper {
     font-family: var(--font-mono);
-    font-size: 10px;
+    font-size: 11px;
     text-transform: uppercase;
-    letter-spacing: var(--tracking-wide-cta);
+    letter-spacing: 0.28em;
     color: color-mix(in oklab, var(--color-stone) 60%, transparent);
+  }
+
+  @media (min-width: 768px) {
+    .k-whisper {
+      font-size: 10px;
+      letter-spacing: var(--tracking-wide-cta);
+    }
   }
 
   /* Kanji: intentionally Japanese serif stack (quiet ink, not random fallback) */

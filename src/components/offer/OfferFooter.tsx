@@ -1,3 +1,5 @@
+import { Mail, MapPin } from "lucide-react"
+
 export function OfferFooter() {
   return (
     <footer className="text-stone border-stone/10 bg-washi relative z-20 overflow-hidden border-t px-6 py-16 md:px-12">
@@ -12,8 +14,25 @@ export function OfferFooter() {
             soles
           </p>
           <p className="font-body text-stone mt-3 text-sm">
-            Engineered calm for those who cannot stop.
+            Engineered calm for the people who can&apos;t sit down at work.
           </p>
+
+          {/* Company presence signals */}
+          <div className="text-stone/60 mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 font-mono text-[10px] tracking-widest uppercase">
+            <span className="flex items-center gap-1.5">
+              <MapPin className="h-3 w-3" />
+              Austin, TX
+            </span>
+            <span className="flex items-center gap-1.5">
+              <Mail className="h-3 w-3" />
+              <a
+                href="mailto:support@hisoles.com"
+                className="hover:text-persimmon transition-colors"
+              >
+                support@hisoles.com
+              </a>
+            </span>
+          </div>
         </div>
 
         <nav className="flex items-center gap-8 font-mono text-xs tracking-widest uppercase">
@@ -33,7 +52,16 @@ export function OfferFooter() {
         </nav>
       </div>
 
-      <div className="border-stone/10 text-stone/60 mx-auto mt-12 flex w-full max-w-6xl justify-between border-t pt-6 font-mono text-[10px] tracking-widest uppercase">
+      {/* Trust footer strip */}
+      <div className="border-stone/10 mx-auto mt-10 flex w-full max-w-6xl flex-wrap items-center justify-center gap-x-6 gap-y-2 border-t pt-6 text-center font-mono text-[10px] tracking-widest uppercase">
+        <span className="text-stone/50">90-day money-back guarantee</span>
+        <span className="text-stone/30 hidden sm:inline">·</span>
+        <span className="text-stone/50">Free returns</span>
+        <span className="text-stone/30 hidden sm:inline">·</span>
+        <span className="text-stone/50">Real humans, not chatbots</span>
+      </div>
+
+      <div className="text-stone/60 mx-auto mt-6 flex w-full max-w-6xl justify-between font-mono text-[10px] tracking-widest uppercase">
         <span>&copy; 2025 Hisoles Inc.</span>
         <span>the art of standing</span>
       </div>

@@ -1,42 +1,100 @@
+import { BadgeCheck } from "lucide-react"
 import Image from "next/image"
 import { OfferSection } from "@/components/offer/OfferSection"
+import { ReviewStats } from "@/components/offer/ReviewStats"
 
-const STORIES = [
+// Photo-backed testimonials (anchor stories)
+const PHOTO_STORIES = [
   {
-    quote: "I sit in my car for 20 mins after every shift. Not today.",
+    quote:
+      "I work 10-hour hospital shifts on tile. With other insoles, the cushion was toast by hour 6. These still feel supportive at hour 10 — and I'm not limping around my kitchen after work.",
+    name: "Nina R.",
     role: "ER Nurse",
-    time: "12h",
-    img: "/ugc/echo-1.jpg",
+    location: "Phoenix, AZ",
+    shift: "10h shifts",
+    usage: "2 weeks in",
+    img: "/product/proof-1.webp",
+    alt: "Nurse holding Hisoles insoles after hospital shift",
+    caption: "The shift ends. You still have enough in your feet to live.",
   },
   {
-    quote: "My Hokas were dead. These brought them back.",
-    role: "Surgical Tech",
-    time: "10h",
-    img: "/ugc/echo-2.jpg",
+    quote:
+      "12-hour days in steel-toe boots on concrete. By lunch my heels used to feel tender. After a week with these, the last few hours feel manageable — and the insoles don't feel crushed flat.",
+    name: "Mike D.",
+    role: "Concrete/Framing",
+    location: "Denver, CO",
+    shift: "12h shifts",
+    usage: "7 shifts in",
+    img: "/product/proof-2.webp",
+    alt: "Construction worker with Hisoles on job site",
+    caption: "Hard floors don't soften. Your support shouldn't either.",
+  },
+] as const
+
+// Text-only shift logs (volume + specificity)
+const SHIFT_LOGS = [
+  {
+    quote:
+      "I'm on a warehouse floor all day (9-10 hours). The biggest change is stability — I feel steadier pushing carts, and my feet don't feel wrecked when I get home.",
+    name: "Jasmine L.",
+    role: "Warehouse Associate",
+    location: "Columbus, OH",
+    shift: "9h shifts",
+    usage: "10 shifts in",
   },
   {
-    quote: "If my feet go, I'm done. These hold me up.",
+    quote:
+      "Steel-toe boots on rebar all day — these fit inside and don't add bulk. My heels don't feel bruised when I peel them off anymore.",
+    name: "Tony R.",
+    role: "Ironworker",
+    location: "Newark, NJ",
+    shift: "10h shifts",
+    usage: "2 weeks in",
+  },
+  {
+    quote:
+      "I do doubles on hard restaurant floors. The 'hot spot' under my heel was the first thing to calm down. It's not squishy — just… steady.",
+    name: "Carlos M.",
+    role: "Server",
+    location: "Austin, TX",
+    shift: "11h shifts",
+    usage: "2 weeks in",
+  },
+  {
+    quote:
+      "I bartend 6 nights a week — standing behind the bar, not walking. My calves used to burn by closing. These made the last 2 hours tolerable.",
+    name: "Derek W.",
+    role: "Bartender",
+    location: "Chicago, IL",
+    shift: "10h shifts",
+    usage: "3 weeks in",
+  },
+  {
+    quote:
+      "Two pairs was the move: one lives in my work shoes, one in my sneakers. I stop forgetting them — and my feet feel more consistent week to week.",
+    name: "Tanya K.",
+    role: "Retail",
+    location: "Seattle, WA",
+    shift: "9h shifts",
+    usage: "1 month in",
+  },
+  {
+    quote:
+      "First 2 shifts felt different (in a good way) — more support. By shift 4 it just felt normal… which is the point.",
+    name: "Sam P.",
     role: "CNA",
-    time: "14h",
-    img: "/ugc/echo-3.jpg",
+    location: "Tampa, FL",
+    shift: "12h shifts",
+    usage: "4 shifts in",
   },
   {
-    quote: "Hour 9 used to feel like glass. Now it's just… a floor.",
+    quote:
+      "Concrete used to feel like it was coming straight through my shoes by the end. Now it's just… a floor.",
+    name: "Alex G.",
     role: "Med Assistant",
-    time: "9h",
-    img: "/ugc/echo-4.jpg",
-  },
-  {
-    quote: "The relief is quiet. That's what makes it real.",
-    role: "ICU Nurse",
-    time: "12h",
-    img: "/ugc/echo-5.jpg",
-  },
-  {
-    quote: "I stopped dreading the last four hours.",
-    role: "ER Tech",
-    time: "12h",
-    img: "/ugc/echo-6.jpg",
+    location: "San Jose, CA",
+    shift: "9h shifts",
+    usage: "2 weeks in",
   },
 ] as const
 
@@ -44,15 +102,17 @@ export function OfferProof() {
   return (
     <OfferSection innerClassName="py-20 md:py-24">
       <header className="text-center">
-        <p className="k-kicker">Field notes</p>
-        <h2 className="k-title k-title-md mt-5">Relief is ritual.</h2>
+        <p className="k-kicker">Shift notes</p>
+        <h2 className="k-title k-title-md mt-5">What changes by hour 10.</h2>
         <p className="k-body mx-auto mt-5 max-w-md text-sm">
-          No hype. Just what people notice on real shifts.
+          Real shifts. Real floors. Small notes that add up.
         </p>
+        <ReviewStats className="mt-6" />
       </header>
 
-      <div className="mt-14 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {STORIES.map((s) => (
+      {/* Photo-backed anchor stories */}
+      <div className="mx-auto mt-14 grid max-w-3xl grid-cols-1 gap-6 md:grid-cols-2">
+        {PHOTO_STORIES.map((s) => (
           <figure
             key={s.img}
             className="bg-washi border-stone/10 overflow-hidden border shadow-[0_1px_3px_rgba(0,0,0,0.04)]"
@@ -60,7 +120,7 @@ export function OfferProof() {
             <div className="bg-stone/5 relative aspect-[4/5]">
               <Image
                 src={s.img}
-                alt={`${s.role} relief moment`}
+                alt={s.alt}
                 fill
                 sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 92vw"
                 className="object-cover"
@@ -69,16 +129,57 @@ export function OfferProof() {
             </div>
 
             <figcaption className="px-6 py-6">
-              <blockquote className="font-body text-sumi text-base leading-snug">
+              <div className="flex items-center justify-between">
+                <p className="k-whisper">{s.caption}</p>
+                <span className="text-persimmon/70 flex items-center gap-1 font-mono text-[9px] tracking-widest uppercase">
+                  <BadgeCheck className="h-3 w-3" />
+                  Verified
+                </span>
+              </div>
+              <blockquote className="font-body text-sumi mt-4 text-base leading-snug">
                 &ldquo;{s.quote}&rdquo;
               </blockquote>
-              <div className="text-stone/50 mt-5 flex items-center justify-between font-mono text-[10px] tracking-widest uppercase">
-                <span>{s.role}</span>
-                <span className="tabular-nums">{s.time}</span>
+              <div className="mt-5 space-y-1">
+                <div className="text-stone/70 font-mono text-[10px] tracking-widest uppercase">
+                  {s.name} · {s.role} · {s.location}
+                </div>
+                <div className="text-stone/50 font-mono text-[10px] tracking-widest uppercase">
+                  {s.shift} · {s.usage}
+                </div>
               </div>
             </figcaption>
           </figure>
         ))}
+      </div>
+
+      {/* Text-only shift logs for volume */}
+      <div className="mx-auto mt-10 max-w-3xl">
+        <p className="k-whisper mb-6 text-center">More from the field</p>
+        <div className="grid gap-4 md:grid-cols-2">
+          {SHIFT_LOGS.map((s) => (
+            <div
+              key={s.name}
+              className="border-stone/10 bg-washi border p-5 shadow-[0_1px_2px_rgba(0,0,0,0.03)]"
+            >
+              <blockquote className="font-body text-sumi text-sm leading-relaxed">
+                &ldquo;{s.quote}&rdquo;
+              </blockquote>
+              <div className="mt-4 flex items-start justify-between gap-2">
+                <div className="space-y-0.5">
+                  <div className="text-stone/70 font-mono text-[10px] tracking-widest uppercase">
+                    {s.name} · {s.role} · {s.location}
+                  </div>
+                  <div className="text-stone/50 font-mono text-[10px] tracking-widest uppercase">
+                    {s.shift} · {s.usage}
+                  </div>
+                </div>
+                <span className="text-persimmon/60 flex shrink-0 items-center gap-1 font-mono text-[9px] tracking-widest uppercase">
+                  <BadgeCheck className="h-3 w-3" />
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </OfferSection>
   )

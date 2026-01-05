@@ -31,8 +31,10 @@ export function OfferArtifact({ className }: OfferArtifactProps) {
         />
 
         <div className="absolute inset-x-0 top-16 px-8 text-center">
-          <span className="k-kicker text-washi/60">Structured support</span>
-          <span className="k-whisper text-washi/50 mt-2 block">quiet cushion · steady arch</span>
+          <span className="k-kicker text-washi/60">Structure that holds</span>
+          <span className="k-whisper text-washi/50 mt-2 block">
+            quiet cushion · grounded heel · steady arch
+          </span>
         </div>
 
         <div className="bg-persimmon/80 absolute inset-x-10 bottom-24 h-28 rounded-[999px] blur-2xl" />
