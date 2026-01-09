@@ -5,3 +5,5 @@ build
 bun.lockb
 public
 *.generated.*
+.factory/droids
+.factory/docs
