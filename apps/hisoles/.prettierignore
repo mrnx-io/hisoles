@@ -3,10 +3,7 @@ node_modules
 dist
 build
 bun.lockb
+next-env.d.ts
 public
 *.generated.*
-.factory/droids
-.factory/docs
-.taskmaster/
 .cache/
-.venv/

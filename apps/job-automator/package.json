@@ -1,0 +1,27 @@
+{
+  "name": "@agi/job-automator",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "bin": {
+    "job-automator": "./dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "dev": "bun run src/cli.ts",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@agi/automation-core": "workspace:*",
+    "zod": "^4.2.1"
+  },
+  "devDependencies": {
+    "@agi/tsconfig": "workspace:*",
+    "@types/bun": "1.2.12",
+    "@types/node": "25.0.2",
+    "typescript": "5.9.3"
+  }
+}

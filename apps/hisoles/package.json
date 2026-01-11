@@ -1,0 +1,52 @@
+{
+  "name": "@agi/hisoles",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "bun --bun next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "biome check .",
+    "lint:fix": "biome check . --write",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "typecheck": "tsc --noEmit",
+    "check": "biome check . && prettier --check . && tsc --noEmit",
+    "test:browser": "bun run src/lib/automation/tests/run-all.ts",
+    "test:browser:checkout": "bun run src/lib/automation/tests/journeys/checkout-flow.ts",
+    "test:browser:offer": "bun run src/lib/automation/tests/journeys/offer-conversion.ts",
+    "test:browser:visual": "bun run src/lib/automation/tests/visual/pages.visual.ts",
+    "test:browser:perf": "bun run src/lib/automation/tests/performance/lighthouse.ts",
+    "test:browser:a11y": "bun run src/lib/automation/tests/accessibility/a11y.ts"
+  },
+  "dependencies": {
+    "@agi/automation-core": "workspace:*",
+    "@browserbasehq/sdk": "^2.6.0",
+    "@browserbasehq/stagehand": "^3.0.7",
+    "@whop/checkout": "^0.0.50",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.561.0",
+    "motion": "^12.23.26",
+    "next": "16.1.1",
+    "playwright-core": "^1.57.0",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "tailwind-merge": "^3.4.0",
+    "zod": "^4.2.1",
+    "zustand": "^5.0.9"
+  },
+  "devDependencies": {
+    "@agi/tsconfig": "workspace:*",
+    "@biomejs/biome": "^2.3.9",
+    "@modelcontextprotocol/sdk": "^1.25.2",
+    "@tailwindcss/postcss": "^4.1.18",
+    "@types/node": "25.0.2",
+    "@types/react": "19.2.7",
+    "@types/react-dom": "19.2.3",
+    "babel-plugin-react-compiler": "19.1.0-rc.3",
+    "prettier": "^3.7.4",
+    "prettier-plugin-tailwindcss": "^0.7.2",
+    "tailwindcss": "^4.1.18",
+    "typescript": "5.9.3"
+  }
+}
