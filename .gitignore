@@ -14,11 +14,15 @@
 /coverage
 
 # next.js
-/.next/
+.next/
 /out/
 
 # production
 /build
+
+# build outputs
+dist/
+test-results/
 
 # misc
 .DS_Store
@@ -53,8 +57,39 @@ bun.lockb
 # factory (personal config, API keys, skills, specs)
 .factory/
 
+# taskmaster (contains API keys in config.json)
+.taskmaster/
+
 # turbopack cache
 .next/cache/
 
+# turborepo cache
+.turbo/
+
+# stagehand/automation cache
+.cache/
+
 # python
 .venv/
+
+# Logs
+logs
+*.log
+dev-debug.log
+# Dependency directories
+node_modules/
+# Environment variables
+.env
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+# OS specific
+
+# Task files
+# tasks.json
+# tasks/ 

@@ -1,0 +1,44 @@
+{
+  "name": "@agi/automation-core",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./stagehand": {
+      "types": "./dist/stagehand.d.ts",
+      "import": "./dist/stagehand.js"
+    },
+    "./agent": {
+      "types": "./dist/agent.d.ts",
+      "import": "./dist/agent.js"
+    },
+    "./types": {
+      "types": "./dist/types.d.ts",
+      "import": "./dist/types.js"
+    }
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@browserbasehq/sdk": "^2.6.0",
+    "@browserbasehq/stagehand": "^3.0.7",
+    "playwright-core": "^1.57.0",
+    "zod": "^4.2.1"
+  },
+  "devDependencies": {
+    "@agi/tsconfig": "workspace:*",
+    "@types/node": "25.0.2",
+    "typescript": "5.9.3"
+  },
+  "peerDependencies": {
+    "typescript": ">=5.0.0"
+  }
+}
